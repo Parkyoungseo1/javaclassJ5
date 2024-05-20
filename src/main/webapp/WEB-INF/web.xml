@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xmlns="https://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="https://xmlns.jcp.org/xml/ns/javaee https://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>javaclass</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+  </welcome-file-list>
+  
+  <!-- 
+  <servlet>
+    <servlet-name>test8</servlet-name>
+    <servlet-class>study.j0424.Test8</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>test8</servlet-name>
+    <url-pattern>/T8</url-pattern>
+  </servlet-mapping>
+  -->
+  
+  <!-- 특정 서블릿에서 초기값 할당하기 -->
+  <servlet>
+    <servlet-name>javaclass</servlet-name>
+  	<servlet-class>study.j0430.Javaclass</servlet-class>
+	  <init-param>
+	  	<param-name>mid</param-name>
+	    <param-value>admin</param-value>
+	  </init-param>
+	  <init-param>
+	  	<param-name>pwd</param-name>
+	    <param-value>1234</param-value>
+	  </init-param>
+	  <init-param>
+	  	<param-name>className</param-name>
+	    <param-value>인사과</param-value>
+	  </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>javaclass</servlet-name>
+    <url-pattern>/GreenJavaclass</url-pattern>
+  </servlet-mapping>
+  
+  
+  <!-- 초기값(공통변수) 미리 설정해두기 -->
+  <context-param>
+    <param-name>logoName</param-name>
+    <param-value>Java Class Company</param-value>
+  </context-param>
+  <context-param>
+    <param-name>homeAddress</param-name>
+    <param-value>http://192.168.50.68:9090/javaclass/</param-value>
+  </context-param>
+  
+  
+  <!-- Filter 처리(Controller앞단에서 제어(처리)한다.) -->
+  <!-- 
+  <filter>
+    <filter-name>filterTest</filter-name>
+    <filter-class>filter.FilterTest</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>filterTest</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  -->
+  
+</web-app>
