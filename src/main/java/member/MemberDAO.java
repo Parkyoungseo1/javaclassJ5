@@ -101,4 +101,9 @@ public class MemberDAO {
 		}
 		return res;
 	}
+
+	public MemberVO getMemberNickCheck(String nickName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
