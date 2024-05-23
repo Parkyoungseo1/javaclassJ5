@@ -7,8 +7,8 @@
 %>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <%-- <a class="navbar-brand" href="<%=request.getContextPath()%>/">Home</a> --%>
-  <!-- <a class="navbar-brand" href="http://192.168.50.68:9090/javaclass">Home</a> -->
-  <a class="navbar-brand" href="http://192.168.50.68:9090/javaclass/Main">Home</a>
+  <!-- <a class="navbar-brand" href="http://192.168.50.68:9090/javaclass5">Home</a> -->
+  <a class="navbar-brand" href="http://192.168.50.68:9090/javaclassJ5/Main">Home</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
   </button>
