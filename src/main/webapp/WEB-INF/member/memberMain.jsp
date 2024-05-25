@@ -43,10 +43,10 @@
   <h2>회원 전용방</h2>
   <hr/>
   <!-- 실시간 채팅방(DB) -->
-  <div style="width:460px">
+  <!-- <div style="width:460px">
   	<form name="chatForm">
   		<lable for="chat"><b>실시간 대화방</b></lable>
-  		<iframe src="${ctp}/include/memberMessage.jsp" width="100%" height="200px" class="border"></iframe>
+  		<iframe src="#" width="100%" height="200px" class="border"></iframe>
   		<div class="input-group mt-1">
   			<input type="text" name="chat" id="chat" class="form-control" placeholder="대화내용을 입력하세요" autofocus/>
   			<div class="input-group-append">
@@ -54,7 +54,7 @@
   			</div>
   		</div>
   	</form>
-  </div>
+  </div> -->
   <hr/>
   <div class="row">
     <div class="col">
