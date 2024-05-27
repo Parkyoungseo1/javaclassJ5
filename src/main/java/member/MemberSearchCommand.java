@@ -1,23 +1,24 @@
 package member;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//import admin.AdminDAO;
-
-public class MemberListCommand implements MemberInterface {
+public class MemberSearchCommand implements MemberInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String mid = request.getParameter("mid")==null ? "" : request.getParameter("mid");
+		
 		MemberDAO dao = new MemberDAO();
 		
-		ArrayList<MemberVO> vos = dao.getMemberList();
+		MemberVO vo = dao.getMemberIdCheck(mid);
 		
-		request.setAttribute("vos", vos);
+		vo.setAddress("(우)" + vo.getAddress().replace("/", " "));;
+		
+		request.setAttribute("vo", vo);
 	}
 
 }

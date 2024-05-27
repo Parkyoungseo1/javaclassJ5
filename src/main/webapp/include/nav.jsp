@@ -15,11 +15,11 @@
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="${ctp}/GuestList">Guest</a>
+        <a class="nav-link" href="${ctp}/GuestList">중고거래 게시판</a>
       </li>
 			<c:if test="${level <= 4}">
 	      <li class="nav-item">
-	        <a class="nav-link" href="BoardList.bo">Board</a>
+	        <a class="nav-link" href="BoardList.bo">중고거래 게시판</a>
 	      </li>
 	    </c:if>  
       <c:if test="${level <= 4 && (level > 1 || level == 0)}">
@@ -47,7 +47,7 @@
 	      </c:if>
       <li class="nav-item">
 				<c:if test="${level <= 4}"><a class="nav-link" href="${ctp}/MemberLogout.mem">Logout</a></c:if>
-        <c:if test="${level > 4}"><a class="nav-link" href="${ctp}/MemberLogin.mem">Login</a></c:if>
+        <c:if test="${level > 4}"><a class="nav-link" href="${ctp}/MemberLogin.mem">로그인</a></c:if>
       </li>    
       <li class="nav-item">
         <c:if test="${level > 4}"><a class="nav-link" href="${ctp}/MemberJoin.mem">Join</a></c:if>
