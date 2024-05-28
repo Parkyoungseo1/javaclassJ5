@@ -201,7 +201,7 @@ public class MemberDAO {
 	public int setMemberUpdateOk(MemberVO vo) {
 		int res = 0;
 		try {
-			sql = "update member set nickName=?, name=?, gender=?, birthday=?, tel=?, address=?, "
+			sql = "update junggomember set nickName=?, name=?, gender=?, birthday=?, tel=?, address=?, "
 					+ "email=?, photo=?, content=?, userInfor=? where mid=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getNickName());
@@ -211,10 +211,10 @@ public class MemberDAO {
 			pstmt.setString(5, vo.getTel());
 			pstmt.setString(6, vo.getAddress());
 			pstmt.setString(7, vo.getEmail());
-			pstmt.setString(11, vo.getPhoto());
-			pstmt.setString(12, vo.getContent());
-			pstmt.setString(13, vo.getUserInfor());
-			pstmt.setString(14, vo.getMid());
+			pstmt.setString(8, vo.getPhoto());
+			pstmt.setString(9, vo.getContent());
+			pstmt.setString(10, vo.getUserInfor());
+			pstmt.setString(11, vo.getMid());
 			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("SQL 오류 : " + e.getMessage());

@@ -23,17 +23,7 @@ public class MemberUpdateOkCommand implements MemberInterface {
 		String content = request.getParameter("content")==null? "" : request.getParameter("content");
 		String userInfor = request.getParameter("userInfor")==null? "" : request.getParameter("userInfor");
 		
-		String[] hobbys = request.getParameterValues("hobby");
-		String hobby = "";
-		if(hobbys.length != 0) {
-			for(String h : hobbys) {
-				hobby += h + "/";
-			}
-		}
-		hobby = hobby.substring(0, hobby.lastIndexOf("/"));
-		
 		// DB에 저장시킨자료중 not null 데이터는 Back End 체크시켜준다.
-		
 		// 닉네임 중복체크....
 		HttpSession session = request.getSession();
 		String sNickName = (String) session.getAttribute("sNickName");

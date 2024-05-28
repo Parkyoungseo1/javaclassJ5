@@ -68,7 +68,7 @@ public class BoardDAO {
 				if(contentsShow.equals("adminOK")) {
 				  sql = "select *, datediff(wDate, now()) as date_diff, timestampdiff(hour, wDate, now()) as hour_diff, "
 				  		+ "(select count(*) from boardReply where boardIdx = b.idx) as replyCnt "
-				  		+ "from junggoboard b where "+search+" like ? order by idx desc limit ?,?";
+				  		+ "from junggoboard b where "+search+" like  ? order by idx desc limit ?,?";
 				  pstmt = conn.prepareStatement(sql);
 				  pstmt.setString(1, "%"+searchString+"%");
 				  pstmt.setInt(2, startIndexNo);
@@ -78,7 +78,7 @@ public class BoardDAO {
 					sql = "select *, datediff(wDate, now()) as date_diff, "
 							+ "timestampdiff(hour, wDate, now()) as hour_diff, "
 							+ "(select count(*) from boardReply where boardIdx = b.idx) as replyCnt "
-							+ "from board b where openSW = 'OK' and complaint = 'NO' and "+search+" like ? union "
+							+ "from junggoboard b where openSW = 'OK' and complaint = 'NO' and "+search+" like ? union "
 							+ "select *, datediff(wDate, now()) as date_diff, timestampdiff(hour, wDate, now()) as hour_diff, "
 							+ "(select count(*) from boardReply where boardIdx = b.idx) as replyCnt "
 							+ "from board b "
@@ -126,7 +126,7 @@ public class BoardDAO {
 	public int setBoardInput(BoardVO vo) {
 		int res = 0;
 		try {
-			sql = "insert into board values (default,?,?,?,?,default,?,?,default,default,default)";
+			sql = "insert into junggoboard values (default,?,?,?,?,,?default,default,default,default,default)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getMid());
 			pstmt.setString(2, vo.getNickName());
@@ -146,7 +146,7 @@ public class BoardDAO {
 	public BoardVO getBoardContent(int idx) {
 		BoardVO vo = new BoardVO();
 		try {
-			sql = "select * from board where idx = ?";
+			sql = "select * from junggoboard where idx = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, idx);
 			rs = pstmt.executeQuery();
@@ -173,7 +173,7 @@ public class BoardDAO {
 	// 조회수 증가처리
 	public void setBoardReadNumPlus(int idx) {
 		try {
-			sql = "update board set readNum = readNum + 1 where idx = ?";
+			sql = "update junggoboard set readNum = readNum + 1 where idx = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, idx);
 			pstmt.executeUpdate();
@@ -188,7 +188,7 @@ public class BoardDAO {
 	public int setBoardDelete(int idx) {
 		int res = 0;
 		try {
-			sql = "delete from board where idx = ?";
+			sql = "delete from junggoboard where idx = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, idx);
 			res = pstmt.executeUpdate();
@@ -206,23 +206,23 @@ public class BoardDAO {
 		try {
 			if(search == null || search.equals("")) {
 				if(contentsShow.equals("adminOK")) {
-				  sql = "select count(*) as cnt from board";
+				  sql = "select count(*) as cnt from junggoboard";
 				  pstmt = conn.prepareStatement(sql);
 				}
 				else {
-					sql = "select sum(a.cnt) as cnt from (select count(*) as cnt from board where openSW = 'OK' and complaint = 'NO' union select count(*) as cnt from board where mid = ? and (openSW = 'NO' or complaint = 'OK')) as a";
+					sql = "select sum(a.cnt) as cnt from (select count(*) as cnt from junggoboard where openSW = 'OK' and complaint = 'NO' union select count(*) as cnt from junggoboard where mid = ? and (openSW = 'NO' or complaint = 'OK')) as a";
 					pstmt = conn.prepareStatement(sql);
 					pstmt.setString(1, contentsShow);
 				}
 			}
 			else {
 				if(contentsShow.equals("adminOK")) {
-				  sql = "select count(*) as cnt from board where "+search+" like ?";
+				  sql = "select count(*) as cnt from junggoboard where "+search+" like ?";
 				  pstmt = conn.prepareStatement(sql);
 				  pstmt.setString(1, "%"+searchString+"%");
 				}
 				else {
-					sql = "select sum(a.cnt) as cnt from (select count(*) as cnt from board where openSW = 'OK' and complaint = 'NO' and "+search+" like ? union select count(*) as cnt from board where mid = ? and (openSW = 'NO' or complaint = 'OK') and "+search+" like ?) as a";
+					sql = "select sum(a.cnt) as cnt from (select count(*) as cnt from junggoboard where openSW = 'OK' and complaint = 'NO' and "+search+" like ? union select count(*) as cnt from junggoboard where mid = ? and (openSW = 'NO' or complaint = 'OK') and "+search+" like ?) as a";
 					pstmt = conn.prepareStatement(sql);
 					pstmt.setString(1, "%"+searchString+"%");
 					pstmt.setString(2, contentsShow);
@@ -244,8 +244,8 @@ public class BoardDAO {
 	public BoardVO getPreNextSearch(int idx, String str) {
 		BoardVO vo = new BoardVO();
 		try {
-			if(str.equals("preVo")) sql = "select idx, title from board where idx < ? order by idx desc limit 1";
-			else sql = "select idx, title from board where idx > ? order by idx limit 1";
+			if(str.equals("preVo")) sql = "select idx, title from junggoboard where idx < ? order by idx desc limit 1";
+			else sql = "select idx, title from junggoboard where idx > ? order by idx limit 1";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, idx);
@@ -267,7 +267,7 @@ public class BoardDAO {
 	public int setBoardGoodCheck(int idx) {
 		int res = 0;
 		try {
-			sql = "update board set good = good + 1 where idx = ?";
+			sql = "update junggoboard set good = good + 1 where idx = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, idx);
 			res = pstmt.executeUpdate();
@@ -282,7 +282,7 @@ public class BoardDAO {
 	// 좋아요수 증가/감소 처리
 	public void setBoardGoodCheckPlusMinus(int idx, int goodCnt) {
 		try {
-			sql = "update board set good = good + ? where idx = ?";
+			sql = "update junggoboard set good = good + ? where idx = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, goodCnt);
 			pstmt.setInt(2, idx);
@@ -298,7 +298,7 @@ public class BoardDAO {
 	public int setBoardUpdateOk(BoardVO vo) {
 		int res = 0;
 		try {
-			sql = "update board set title=?, content=?, openSw=?, wDate=now() where idx = ?";
+			sql = "update junggoboard set title=?, content=?, openSw=?, wDate=now() where idx = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getTitle());
 			pstmt.setString(2, vo.getContent());
