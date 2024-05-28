@@ -14,6 +14,7 @@ public class BoardInputOkCommand implements BoardInterface {
 		String nickName = request.getParameter("nickName")==null ? "" : request.getParameter("nickName");
 		String title = request.getParameter("title")==null ? "" : request.getParameter("title");
 		String content = request.getParameter("content")==null ? "" : request.getParameter("content");
+		int price = request.getParameter("price")==null ? 0 : Integer.parseInt(request.getParameter("price"));
 		String openSw = request.getParameter("openSw")==null ? "" : request.getParameter("openSw");
 		
 		BoardVO vo = new BoardVO();
@@ -23,6 +24,7 @@ public class BoardInputOkCommand implements BoardInterface {
 		title = title.replace("<", "&lt;").replace(">", "&gt;");
 		vo.setTitle(title);
 		vo.setContent(content);
+		vo.setPrice(price);
 		vo.setOpenSw(openSw);
 		
 		BoardDAO dao = new BoardDAO();

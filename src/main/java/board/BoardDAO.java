@@ -43,7 +43,7 @@ public class BoardDAO {
 				if(contentsShow.equals("adminOK")) {
 				  sql = "select *, datediff(wDate, now()) as date_diff, "
 				  		+ "timestampdiff(hour, wDate, now()) as hour_diff, "
-				  		+ "(select count(*) from boardReply where boardIdx = b.idx) as replyCnt "
+				  		+ "(select count(*) from junggoboardReply where boardIdx = b.idx) as replyCnt "
 				  		+ "from junggoboard b order by idx desc limit ?,?";
 				  pstmt = conn.prepareStatement(sql);
 				  pstmt.setInt(1, startIndexNo);
@@ -52,10 +52,10 @@ public class BoardDAO {
 				else {
 					sql = "select *, datediff(wDate, now()) as date_diff, "
 							+ "timestampdiff(hour, wDate, now()) as hour_diff, "
-							+ "(select count(*) from boardReply where boardIdx = b.idx) as replyCnt "
+							+ "(select count(*) from junggoboardReply where boardIdx = b.idx) as replyCnt "
 							+ "from junggoboard b where openSW = 'OK' and complaint = 'NO' union "
 							+ "select *, datediff(wDate, now()) as date_diff, timestampdiff(hour, wDate, now()) as hour_diff, "
-							+ "(select count(*) from boardReply where boardIdx = b.idx) as replyCnt "
+							+ "(select count(*) from junggoboardReply where boardIdx = b.idx) as replyCnt "
 							+ "from junggoboard b "
 							+ "where mid = ? order by idx desc limit ?,?";
 					pstmt = conn.prepareStatement(sql);
@@ -67,7 +67,7 @@ public class BoardDAO {
 			else {
 				if(contentsShow.equals("adminOK")) {
 				  sql = "select *, datediff(wDate, now()) as date_diff, timestampdiff(hour, wDate, now()) as hour_diff, "
-				  		+ "(select count(*) from boardReply where boardIdx = b.idx) as replyCnt "
+				  		+ "(select count(*) from junggoboardReply where boardIdx = b.idx) as replyCnt "
 				  		+ "from junggoboard b where "+search+" like  ? order by idx desc limit ?,?";
 				  pstmt = conn.prepareStatement(sql);
 				  pstmt.setString(1, "%"+searchString+"%");
@@ -77,11 +77,11 @@ public class BoardDAO {
 				else {
 					sql = "select *, datediff(wDate, now()) as date_diff, "
 							+ "timestampdiff(hour, wDate, now()) as hour_diff, "
-							+ "(select count(*) from boardReply where boardIdx = b.idx) as replyCnt "
+							+ "(select count(*) from junggoboardReply where boardIdx = b.idx) as replyCnt "
 							+ "from junggoboard b where openSW = 'OK' and complaint = 'NO' and "+search+" like ? union "
 							+ "select *, datediff(wDate, now()) as date_diff, timestampdiff(hour, wDate, now()) as hour_diff, "
-							+ "(select count(*) from boardReply where boardIdx = b.idx) as replyCnt "
-							+ "from board b "
+							+ "(select count(*) from junggoboardReply where boardIdx = b.idx) as replyCnt "
+							+ "from junggoboard b "
 							+ "where mid = ? and "+search+" like ? order by idx desc limit ?,?";
 					pstmt = conn.prepareStatement(sql);
 					pstmt.setString(1, "%"+searchString+"%");
@@ -101,15 +101,16 @@ public class BoardDAO {
 				vo.setTitle(rs.getString("title"));
 				vo.setContent(rs.getString("content"));
 				vo.setReadNum(rs.getInt("readNum"));
+				vo.setPrice(rs.getInt("price"));
 				vo.setOpenSw(rs.getString("openSw"));
 				vo.setwDate(rs.getString("wDate"));
 				vo.setGood(rs.getInt("good"));
 				vo.setComplaint(rs.getString("complaint"));
 				
-//				vo.setHour_diff(rs.getInt("hour_diff"));
-//				vo.setDate_diff(rs.getInt("date_diff"));
-//				
-//				vo.setReplyCnt(rs.getInt("replyCnt"));
+				vo.setHour_diff(rs.getInt("hour_diff"));
+				vo.setDate_diff(rs.getInt("date_diff"));
+				
+				vo.setReplyCnt(rs.getInt("replyCnt"));
 				
 				vos.add(vo);
 			}
@@ -126,13 +127,14 @@ public class BoardDAO {
 	public int setBoardInput(BoardVO vo) {
 		int res = 0;
 		try {
-			sql = "insert into junggoboard values (default,?,?,?,?,,?default,default,default,default,default)";
+			sql = "insert into junggoboard values (default,?,?,?,?,default,?,?,default,default,default)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getMid());
 			pstmt.setString(2, vo.getNickName());
 			pstmt.setString(3, vo.getTitle());
 			pstmt.setString(4, vo.getContent());
-			pstmt.setString(5, vo.getOpenSw());
+			pstmt.setInt(5, vo.getPrice());
+			pstmt.setString(6, vo.getOpenSw());
 			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("SQL 오류 : " + e.getMessage());
@@ -158,6 +160,7 @@ public class BoardDAO {
 				vo.setTitle(rs.getString("title"));
 				vo.setContent(rs.getString("content"));
 				vo.setReadNum(rs.getInt("readNum"));
+				vo.setPrice(rs.getInt("price"));
 				vo.setOpenSw(rs.getString("openSw"));
 				vo.setwDate(rs.getString("wDate"));
 				vo.setGood(rs.getInt("good"));
@@ -298,12 +301,48 @@ public class BoardDAO {
 	public int setBoardUpdateOk(BoardVO vo) {
 		int res = 0;
 		try {
-			sql = "update junggoboard set title=?, content=?, openSw=?, wDate=now() where idx = ?";
+			sql = "update junggoboard set title=?, content=?, openSw=?, price=?, wDate=now() where idx = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getTitle());
 			pstmt.setString(2, vo.getContent());
 			pstmt.setString(3, vo.getOpenSw());
+			pstmt.setInt(4, vo.getPrice());
 			pstmt.setInt(5, vo.getIdx());
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();			
+		}
+		return res;
+	}
+
+	// 댓글 저장하기
+	public int setReplyInput(BoardReplyVO vo) {
+		int res = 0;
+		try {
+			sql = "insert into junggoboardReply values (default,?,?,default,?,?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, vo.getBoardIdx());
+			pstmt.setString(2, vo.getMid());
+			pstmt.setString(3, vo.getNickName());
+			pstmt.setString(4, vo.getContent());
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();			
+		}
+		return res;
+	}
+
+	// 댓글 삭제처리
+	public int setBoardReplyDelete(int idx) {
+		int res = 0;
+		try {
+			sql = "delete from junggoboardReply where idx = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
 			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("SQL 오류 : " + e.getMessage());

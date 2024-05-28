@@ -1,4 +1,5 @@
 show tables;
+
 create table junggomember (
   idx       int not null auto_increment,/* 회원 고유번호 */
   mid       varchar(30) not null,				/* 회원 아이디(중복불허) */
@@ -25,6 +26,7 @@ create table junggomember (
   primary key (idx),
   unique(mid)
 );
+drop table junggomember;
 desc junggomember;
 
 insert into junggomember values (default,'admin','1234','관리맨','관리자','남자',default,'010-1234-5678','010/사창동/롯데캐슬/100동/101호','abc@atom.com',default,'관리자입니다.',default,default,default,default,default,default,default,default);

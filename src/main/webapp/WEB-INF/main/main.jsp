@@ -25,36 +25,43 @@
 
 <div class="container" style="margin-top:30px">
   <div class="row">
-    <div class="col-sm-4">
-     <img src="${ctp}/images/member/junggomain.jpg" alt="Description of image" class="img-fluid mb-3">
+     <div class="col-sm-4">
+      <img src="${ctp}/images/member/junggomain.jpg" alt="Description of image" class="img-fluid mb-3">
       <hr class="d-sm-none">
     </div>
     <div class="col-sm-8">
       <h2>실시간 채팅</h2>
       <h5>Title description, Dec 7, 2017</h5>
+      <h5 class="mb-4">로그인 중인 회원 : ${sName}</h5>
+      <h6 class="text-right">최근 올라온 채팅</h6>
       <table class="table table-hover text-center">
-      	<h5 class="mb-4">로그인 중인 회원 : ${sName}</h5>
-    		<h6 class="text-right">최근 올라온 채팅</h6>
-		    <tr class="table-dark text-dark">
-		      <th>번호</th>
-		      <th>아이디</th>
-		      <th>성명</th>
-		    </tr>
-		    <c:forEach var="vo" items="${vos}" varStatus="st">
-		    	<tr>
-		    	  <td>${vo.idx}</td>
-		    	  <td>${vo.mid}</td>
-		    	  <td>${vo.name}</td>
-		    	  <td>${vo.age}</td>
-		    	  <td>${vo.gender}</td>
-		    	  <td>${vo.address}</td>
-		    	</tr>
-		    </c:forEach>
-		    <tr><td colspan="6" class="m-0 p-0"></td></tr>
-  		</table>
+        <thead>
+          <tr class="table-dark text-dark">
+            <th>번호</th>
+            <th>아이디</th>
+            <th>성명</th>
+            <th>나이</th>
+            <th>성별</th>
+            <th>주소</th>
+          </tr>
+        </thead>
+        <tbody>
+          <c:forEach var="vo" items="${vos}" varStatus="st">
+            <tr>
+              <td>${vo.idx}</td>
+              <td>${vo.mid}</td>
+              <td>${vo.name}</td>
+              <td>${vo.age}</td>
+              <td>${vo.gender}</td>
+              <td>${vo.address}</td>
+            </tr>
+          </c:forEach>
+          <tr><td colspan="6" class="m-0 p-0"></td></tr>
+        </tbody>
+      </table>
       <p>Some text..</p>
       <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-			<hr/>
+      <hr/>
       <br>
       <h2>TITLE HEADING</h2>
       <h5>Title description, Sep 2, 2017</h5>
