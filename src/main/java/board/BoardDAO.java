@@ -321,7 +321,7 @@ public class BoardDAO {
 	public int setReplyInput(BoardReplyVO vo) {
 		int res = 0;
 		try {
-			sql = "insert into junggoboardReply values (default,?,?,default,?,?)";
+			sql = "insert into junggoboardReply values (default,?,?,?,default,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, vo.getBoardIdx());
 			pstmt.setString(2, vo.getMid());
@@ -350,6 +350,35 @@ public class BoardDAO {
 			pstmtClose();			
 		}
 		return res;
+	}
+
+	// 작성된 댓글 가져오기
+	public ArrayList<BoardReplyVO> getBoardReply(int idx) {
+		ArrayList<BoardReplyVO> replyVos = new ArrayList<>();
+		try {
+			sql = "select * from junggoboardReply where boardIdx = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			rs = pstmt.executeQuery();
+			
+			BoardReplyVO vo = null;
+			while(rs.next()) {
+				vo = new BoardReplyVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setBoardIdx(rs.getInt("boardIdx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setNickName(rs.getString("nickName"));
+				vo.setwDate(rs.getString("wDate"));
+				vo.setContent(rs.getString("content"));
+				
+				replyVos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			rsClose();			
+		}
+		return replyVos;
 	}
 
 }

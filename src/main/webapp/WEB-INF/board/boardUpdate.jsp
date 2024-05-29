@@ -26,6 +26,10 @@
         <td><input type="text" name="title" id="title" value="${vo.title}" autofocus required class="form-control" /></td>
       </tr>
       <tr>
+        <th>상품 가격</th>
+        <td><input type="text" name="price" id="price" value="${vo.price}" autofocus required class="form-control" /></td>
+      </tr>
+      <tr>
         <th>글내용</th>
         <td><textarea name="content" id="content" rows="6" class="form-control" required>${vo.content}</textarea></td>
       </tr>

@@ -68,7 +68,7 @@
 			      <td>${curScrStartNo}</td>
 			      <td class="text-left">
 			        <a href="BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}&flag=search&search=${search}&searchString=${searchString}">${vo.title}</a>
-			        <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif" /></c:if>  
+			        <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/member/new.gif" /></c:if>  
 			      </td>
 			      <td>
 			        ${vo.nickName}

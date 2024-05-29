@@ -1,4 +1,4 @@
-package board;
+package admin.board;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,9 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-//import admin.AdminDAO;
+import admin.AdminInterface;
+import board.BoardDAO;
+import board.BoardVO;
 
-public class BoardContentCommand implements BoardInterface {
+public class BoardContentCommand implements AdminInterface {
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -18,9 +20,6 @@ public class BoardContentCommand implements BoardInterface {
 		int idx = request.getParameter("idx")==null ? 0 : Integer.parseInt(request.getParameter("idx"));
 		int pag = request.getParameter("pag")==null ? 0 : Integer.parseInt(request.getParameter("pag"));
 		int pageSize = request.getParameter("pageSize")==null ? 0 : Integer.parseInt(request.getParameter("pageSize"));
-		String flag = request.getParameter("flag")==null ? "" : request.getParameter("flag");
-		String search = request.getParameter("search")==null ? "" : request.getParameter("search");
-		String searchString = request.getParameter("searchString")==null ? "" : request.getParameter("searchString");
 		
 		BoardDAO dao = new BoardDAO();
 		
@@ -45,19 +44,6 @@ public class BoardContentCommand implements BoardInterface {
 		BoardVO nextVo = dao.getPreNextSearch(idx, "nextVo");
 		request.setAttribute("preVo", preVo);
 		request.setAttribute("nextVo", nextVo);
-		
-		// 신고글 유무 처리하기
-//		AdminDAO adminDao = new AdminDAO();
-//		String report = adminDao.getReport("board", idx);
-//		
-//		request.setAttribute("report", report);
-		request.setAttribute("flag", flag);
-		request.setAttribute("search", search);
-		request.setAttribute("searchString", searchString);
-		
-		// 댓글 처리
-		ArrayList<BoardReplyVO> replyVos = dao.getBoardReply(idx);
-		request.setAttribute("replyVos", replyVos);
 	}
 
 }

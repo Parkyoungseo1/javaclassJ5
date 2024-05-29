@@ -58,41 +58,36 @@ public class BoardController extends HttpServlet {
 			command.execute(request, response);
 			viewPage = "/include/message.jsp";
 		}
-//		else if(com.equals("/BoardDelete")) {
-//			command = new BoardDeleteCommand();
-//			command.execute(request, response);
-//			viewPage = "/include/message.jsp";
-//		}
+		else if(com.equals("/BoardDelete")) {
+			command = new BoardDeleteCommand();
+			command.execute(request, response);
+			viewPage = "/include/message.jsp";
+		}
 //		else if(com.equals("/BoardGoodCheck")) {
 //			command = new BoardGoodCheckCommand();
 //			command.execute(request, response);
 //			return;
 //		}
-//		else if(com.equals("/BoardGoodCheck2")) {
-//			command = new BoardGoodCheck2Command();
-//			command.execute(request, response);
-//			return;
-//		}
-//		else if(com.equals("/BoardGoodCheckPlusMinus")) {
-//			command = new BoardGoodCheckPlusMinusCommand();
-//			command.execute(request, response);
-//			return;
-//		}
+		else if(com.equals("/BoardGoodCheck2")) {
+			command = new BoardGoodCheck2Command();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/BoardGoodCheckPlusMinus")) {
+			command = new BoardGoodCheckPlusMinusCommand();
+			command.execute(request, response);
+			return;
+		}
 		else if(com.equals("/BoardSearchList")) {
 			command = new BoardSearchListCommand();
 			command.execute(request, response);
 			viewPage += "/boardSearchList.jsp";
 		}
-//		else if(com.equals("/BoardReplyInput")) {
-//			command = new BoardReplyInputCommand();
-//			command.execute(request, response);
-//			return;
-//		}
-//		else if(com.equals("/BoardReplyDelete")) {
-//			command = new BoardReplyDeleteCommand();
-//			command.execute(request, response);
-//			return;
-//		}
+		else if(com.equals("/BoardReplyInput")) {
+			command = new BoardReplyInputCommand();
+			command.execute(request, response);
+			return;
+		}
 		
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
