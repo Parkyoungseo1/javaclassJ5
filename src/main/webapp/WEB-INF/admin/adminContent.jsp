@@ -62,7 +62,7 @@
       <div class="col-md-6">
         <div class="stat-card">
           <p>게시글 새글</p>
-          <b>???</b>건
+          <a href="BoardList.bo?level=1"><b>${mCount}</b></a>건
         </div>
       </div>
       <div class="col-md-6">

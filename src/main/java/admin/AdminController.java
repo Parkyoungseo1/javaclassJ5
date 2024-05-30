@@ -94,11 +94,11 @@ public class AdminController extends HttpServlet {
 //			command.execute(request, response);
 //			return;
 //		}
-//		else if(com.equals("/BoardList")) {
-//			command = new BoardListCommand();
-//			command.execute(request, response);
-//			viewPage += "/board/boardList.jsp";
-//		}
+		else if(com.equals("/BoardList")) {
+			command = new BoardListCommand();
+			command.execute(request, response);
+			viewPage += "/board/boardList.jsp";
+		}
 		else if(com.equals("/BoardContent")) {
 			command = new BoardContentCommand();
 			command.execute(request, response);

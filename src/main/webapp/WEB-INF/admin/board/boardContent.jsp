@@ -106,8 +106,8 @@
     <tr>
       <th>글조회수</th>
       <td>${vo.readNum}</td>
-      <th>접속IP</th>
-      <td>${vo.hostIp}</td>
+      <th>가격</th>
+      <td>${vo.price}</td>
     </tr>
     <tr>
       <th>글제목</th>
