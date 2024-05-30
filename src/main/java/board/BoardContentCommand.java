@@ -49,7 +49,7 @@ public class BoardContentCommand implements BoardInterface {
 		// 신고글 유무 처리하기
 //		AdminDAO adminDao = new AdminDAO();
 //		String report = adminDao.getReport("board", idx);
-//		
+		
 //		request.setAttribute("report", report);
 		request.setAttribute("flag", flag);
 		request.setAttribute("search", search);

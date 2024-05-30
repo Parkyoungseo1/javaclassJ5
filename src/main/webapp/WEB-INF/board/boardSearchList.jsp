@@ -106,8 +106,7 @@
 	</div>
 	<!-- 블록페이지 끝 -->
 	<br/>
-	<!-- 검색기 시작 -->
-	<!-- 
+	<!-- 검색기 시작 --> 
 	<div class="container text-center">
 	  <form name="searchForm" method="post" action="BoardSearch.bo">
 	    <b>검색 : </b>
@@ -120,7 +119,6 @@
 	    <input type="submit" value="검색" class="btn btn-secondary btn-sm"/>
 	  </form>
 	</div>
-	 -->
 	<!-- 검색기 끝 -->
 	<input type="button" value="돌아가기" onclick="location.href='BoardList.bo';" class="btn btn-warning"/>
 </div>

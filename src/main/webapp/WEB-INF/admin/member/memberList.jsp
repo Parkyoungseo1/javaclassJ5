@@ -109,7 +109,7 @@
     	let select = document.getElementById("levelSelect");
     	let levelSelectText = select.options[select.selectedIndex].text;
     	let levelSelect = select.options[select.selectedIndex].value;
-    	// let levelSelect = document.getElementById("levelSelect").value;
+    	 let levelSelect = document.getElementById("levelSelect").value;
     	let idxSelectArray = '';
     	
       for(let i=0; i<myform.idxFlag.length; i++) {
@@ -150,9 +150,9 @@
     <div class="col text-right">
       <select name="levelItem" id="levelItem" onchange="levelItemCheck()">
         <option value="999" ${level > 4  ? "selected" : ""}>전체보기</option>
-        <option value="1"   ${level == 1 ? "selected" : ""}>준회원</option>
-        <option value="2"   ${level == 2 ? "selected" : ""}>정회원</option>
-        <option value="3"   ${level == 3 ? "selected" : ""}>우수회원</option>
+        <option value="1"   ${level == 1 ? "selected" : ""}>신규회원</option>
+        <option value="2"   ${level == 2 ? "selected" : ""}>일반회원</option>
+        <option value="3"   ${level == 3 ? "selected" : ""}>거래우수회원</option>
         <option value="99"  ${level == 99 ? "selected" : ""}>탈퇴신청회원</option>
         <option value="0"   ${level == 0 ? "selected" : ""}>관리자</option>
       </select>

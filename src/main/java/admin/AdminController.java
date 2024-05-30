@@ -15,10 +15,10 @@ import admin.board.BoardListCommand;
 import admin.complaint.BoardComplaintInputCommand;
 import admin.complaint.ComplaintCheckCommand;
 import admin.complaint.ComplaintListCommand;
-//import admin.member.MemberDeleteOkCommand;
-//import admin.member.MemberLevelChangeCommand;
-//import admin.member.MemberLevelSelectCheckCommand;
-//import admin.member.MemberListCommand;
+import admin.member.MemberDeleteOkCommand;
+import admin.member.MemberLevelChangeCommand;
+import admin.member.MemberLevelSelectCheckCommand;
+import admin.member.MemberListCommand;
 //import admin.review.ReviewDeleteCommand;
 //import admin.review.ReviewInputOkCommand;
 //import admin.review.ReviewReplyInputOkCommand;
@@ -74,26 +74,26 @@ public class AdminController extends HttpServlet {
 			command.execute(request, response);
 			viewPage += "/adminContent.jsp";
 		}
-//		else if(com.equals("/MemberList")) {
-//			command = new MemberListCommand();
-//			command.execute(request, response);
-//			viewPage += "/member/memberList.jsp";
-//		}
-//		else if(com.equals("/MemberLevelChange")) {
-//			command = new MemberLevelChangeCommand();
-//			command.execute(request, response);
-//			return;
-//		}
-//		else if(com.equals("/MemberDeleteOk")) {
-//			command = new MemberDeleteOkCommand();
-//			command.execute(request, response);
-//			return;
-//		}
-//		else if(com.equals("/MemberLevelSelectCheck")) {
-//			command = new MemberLevelSelectCheckCommand();
-//			command.execute(request, response);
-//			return;
-//		}
+		else if(com.equals("/MemberList")) {
+			command = new MemberListCommand();
+			command.execute(request, response);
+			viewPage += "/member/memberList.jsp";
+		}
+		else if(com.equals("/MemberLevelChange")) {
+			command = new MemberLevelChangeCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/MemberDeleteOk")) {
+			command = new MemberDeleteOkCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/MemberLevelSelectCheck")) {
+			command = new MemberLevelSelectCheckCommand();
+			command.execute(request, response);
+			return;
+		}
 		else if(com.equals("/BoardList")) {
 			command = new BoardListCommand();
 			command.execute(request, response);

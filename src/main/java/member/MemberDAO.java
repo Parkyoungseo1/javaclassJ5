@@ -223,4 +223,20 @@ public class MemberDAO {
 		}
 		return res;
 	}
+	
+	// 회원 탈퇴 신청처리...
+	public int setMemberDeleteUpdate(String mid) {
+		int res = 0;
+		try {
+			sql = "update junggomember set userDel = 'OK', level=99 where mid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
 }

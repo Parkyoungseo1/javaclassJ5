@@ -68,7 +68,7 @@
       <div class="col-md-6">
         <div class="stat-card">
           <p>신고글(최근 1주일)</p>
-          <b>???</b>건
+          <a href="Complaint.ad?level=1"><b>${mCount}</b></a>건
         </div>
       </div>
       <div class="col-md-6">
