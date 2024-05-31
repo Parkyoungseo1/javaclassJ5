@@ -183,7 +183,7 @@
               <option value="052" ${tel1 == '052' ? 'selected' : ''}>울산</option>
               <option value="061" ${tel1 == '061' ? 'selected' : ''}>전북</option>
               <option value="062" ${tel1 == '062' ? 'selected' : ''}>광주</option>
-            </select>-
+            </select>
         </div>
         <input type="text" name="tel2" value="${tel2}" size=4 maxlength=4 class="form-control"/>-
         <input type="text" name="tel3" value="${tel3}" size=4 maxlength=4 class="form-control"/>

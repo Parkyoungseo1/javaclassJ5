@@ -34,7 +34,7 @@
 					    <div class="dropdown-menu">
 					      <a class="dropdown-item" href="MemberMain.mem">회원메인창</a>
 					      <c:if test="${level <= 4 && (level > 1 || level == 0)}">
-						      <a class="dropdown-item" href="#">일정관리</a>
+						      <a class="dropdown-item" href="Schedule.sc">일정관리</a>
 						      <a class="dropdown-item" href="#">메세지관리</a>
 						      <a class="dropdown-item" href="MemberList.mem">회원리스트</a>
 					      </c:if>

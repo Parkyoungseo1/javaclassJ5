@@ -140,6 +140,22 @@ public class MemberDAO {
 		return vo;
 	}
 	
+	// 로그인시에 처리할 내용들을 업데이트 시켜준다.
+	public void setLoginUpdate(MemberVO vo) {
+		try {
+			sql = "update junggomember set point=?, lastDate=now(), visitCnt=visitCnt+1, todayCnt=? where mid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, vo.getPoint());
+			pstmt.setInt(2, vo.getTodayCnt());
+			pstmt.setString(3, vo.getMid());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+	}
+	
 	// 비밀번호 변경처리
 	public int setMemberPwdChange(String mid, String pwd) {
 		int res = 0;

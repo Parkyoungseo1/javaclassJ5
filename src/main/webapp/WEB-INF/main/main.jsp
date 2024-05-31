@@ -91,7 +91,9 @@
       <hr/>
       <h2></h2>
       <h5></h5>
-      <div class="fakeimg">Fake Image</div>
+      <div class="fakeimg">
+        <img src="${ctp}/images/member/${selectedImage}" alt="Random Image" class="img-fluid">
+      </div>
       <p></p>
       <p></p>
     </div>

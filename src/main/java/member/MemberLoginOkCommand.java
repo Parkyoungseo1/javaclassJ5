@@ -69,7 +69,7 @@ public class MemberLoginOkCommand implements MemberInterface {
 		// 조건: 방명록에 5회이상 글을 올렸을시 '준회원'에서 '정회원'으로 자동 등업처리한다.(단, 방명록의 글은 1일 여러번 등록해도 1회로 처리한다) 
 		
 		// 3. 방문포인트와 카운트를 증가처리한내용을 vo에 모두 담았다면 DB 자신의 레코드에 변경된 사항들을 갱신처리해준다.
-		//dao.setLoginUpdate(vo);		
+		dao.setLoginUpdate(vo);		
 		
 		
 		// 쿠키에 아이디를 저장/해제 처리한다.
