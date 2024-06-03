@@ -109,7 +109,6 @@
     	let select = document.getElementById("levelSelect");
     	let levelSelectText = select.options[select.selectedIndex].text;
     	let levelSelect = select.options[select.selectedIndex].value;
-    	 let levelSelect = document.getElementById("levelSelect").value;
     	let idxSelectArray = '';
     	
       for(let i=0; i<myform.idxFlag.length; i++) {

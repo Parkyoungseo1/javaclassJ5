@@ -14,14 +14,14 @@
   </button>
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
+			<c:if test="${level <= 4}">
       <li class="nav-item">
         <!-- <a class="nav-link" href="${ctp}/GuestList">중고거래 게시판</a> -->
-        <a class="nav-link" href="${ctp}/Chat.chat">중고거래 게시판</a>
+        <a class="nav-link" href="${ctp}/Chat.chat">채팅</a>
       </li>
-			<c:if test="${level <= 4}">
-	      <li class="nav-item">
-	        <a class="nav-link" href="BoardList.bo">중고거래 게시판</a>
-	      </li>
+	    <li class="nav-item">
+	      <a class="nav-link" href="BoardList.bo">중고거래 게시판</a>
+	    </li>
 	    </c:if>  
       <c:if test="${level <= 4 && (level > 1 || level == 0)}">
 	      <li class="nav-item">
@@ -51,7 +51,7 @@
         <c:if test="${level > 4}"><a class="nav-link" href="${ctp}/MemberLogin.mem">로그인</a></c:if>
       </li>    
       <li class="nav-item">
-        <c:if test="${level > 4}"><a class="nav-link" href="${ctp}/MemberJoin.mem">Join</a></c:if>
+        <c:if test="${level > 4}"><a class="nav-link" href="${ctp}/MemberJoin.mem">회원가입</a></c:if>
       </li>    
     </ul>
   </div>  

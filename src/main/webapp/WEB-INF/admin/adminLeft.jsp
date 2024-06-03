@@ -63,11 +63,6 @@
         <p><a href="${ctp}/Main" target="_top">홈으로</a></p>
         <hr/>
         <div class="link-group">
-          <h5>방명록</h5>
-          <div><a href="${ctp}/GuestList" target="adminContent">방명록 리스트</a></div>
-        </div>
-        <hr/>
-        <div class="link-group">
           <h5>게시판</h5>
           <div><a href="BoardList.ad" target="adminContent">게시판 리스트</a></div>
         </div>

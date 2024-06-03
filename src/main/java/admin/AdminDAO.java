@@ -80,7 +80,7 @@ public class AdminDAO {
 				vo.setLastDate(rs.getString("lastDate"));
 				vo.setTodayCnt(rs.getInt("todayCnt"));
 				
-//				vo.setDeleteDiff(rs.getInt("deleteDiff"));
+				vo.setDeleteDiff(rs.getInt("deleteDiff"));
 				
 				vos.add(vo);
 			}
@@ -195,7 +195,7 @@ public class AdminDAO {
 //	public String getReport(String part, int partIdx) {
 //		String report = "NO";
 //		try {
-//			sql = "select * from complaint where part = ? and partIdx = ?";
+//			sql = "select * from junggocomplaint where part = ? and partIdx = ?";
 //			pstmt = conn.prepareStatement(sql);
 //			pstmt.setString(1, part);
 //			pstmt.setInt(2, partIdx);
@@ -209,7 +209,7 @@ public class AdminDAO {
 //		}
 //		return report;
 //	}
-//
+
 	// 신고 전체 목록
 	public ArrayList<ComplaintVO> ComplaintList() {
 		ArrayList<ComplaintVO> vos = new ArrayList<ComplaintVO>();
@@ -243,7 +243,8 @@ public class AdminDAO {
 		}
 		return vos;
 	}
-
+	
+	
 	public void setComplaintCheck(String part, int partIdx, String complaint) {
 		try {
 			if(complaint.equals("NO")) {
@@ -260,6 +261,20 @@ public class AdminDAO {
 		} finally {
 			pstmtClose();			
 		}
+	}
+	
+	//신고글 삭제하기 
+	public void setDeleteComplaint(int idx) {
+	   try {
+	       sql = "delete from junggocomplaint where idx = ?";
+	       pstmt = conn.prepareStatement(sql);
+	       pstmt.setInt(1, idx);
+	       pstmt.executeUpdate();
+	   } catch (SQLException e) {
+	       System.out.println("SQL 오류 : " + e.getMessage());
+	   } finally {
+	     pstmtClose();            
+	   }
 	}
 
 }

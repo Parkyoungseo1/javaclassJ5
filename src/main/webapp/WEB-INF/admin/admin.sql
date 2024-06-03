@@ -17,6 +17,8 @@ insert into junggocomplaint values (default, 'junggoboard', 6, 'hkd1234', 'ê´‘ê³
 
 select * from junggocomplaint;
 
+delete from junggocomplaint where idx = '1';
+
 select c.*, b.title, b.nickName, b.mid from junggocomplaint c, junggoboard b where c.partIdx = b.idx ;
 
 select c.*, b.title as title, b.nickName as nickName, b.mid as mid from junggocomplaint c, junggoboard b where c.partIdx = b.idx;

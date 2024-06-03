@@ -10,23 +10,39 @@
   <%@ include file = "/include/bs4.jsp" %>
   <script>
     'use strict';
-    
-    function complaintCheck(part,partIdx, complaint) {
-    	$.ajax({
-    		url  : "ComplaintCheck.ad",
-    		type : "post",
-    		data : {
-    			part     : part,
-    			partIdx  : partIdx,
-    			complaint:complaint
-    		},
-    		success:function() {
-    			location.reload();
-    		},
-    		error : function() {
-    			alert("전송오류!");
-    		}
-    	});
+
+    function complaintCheck(part, partIdx, complaint) {
+      $.ajax({
+        url: "ComplaintCheck.ad",
+        type: "post",
+        data: {
+          part: part,
+          partIdx: partIdx,
+          complaint: complaint
+        },
+        success: function() {
+          location.reload();
+        },
+        error: function() {
+          alert("전송오류!");
+        }
+      });
+    }
+
+    function deleteComplaint(idx) {
+      if (confirm("정말로 이 신고를 삭제하시겠습니까?")) {
+        $.ajax({
+          url: "DeleteComplaint.ad",
+          type: "post",
+          data: { idx : idx},
+          success: function() {
+            location.reload();
+          },
+          error: function() {
+            alert("삭제 실패!");
+          }
+        });
+      }
     }
   </script>
 </head>
@@ -44,24 +60,28 @@
       <th>신고내역</th>
       <th>신고날짜</th>
       <th>표시여부</th>
+      <th>삭제</th>
     </tr>
     <c:set var="complaintCnt" value="${complaintCnt}" />
     <c:forEach var="vo" items="${vos}" varStatus="st">
-	    <tr>
-	      <td>${complaintCnt}</td>
-	      <td>${vo.part}</td>
-	      <td>${vo.title}</td>
-	      <td>${vo.nickName}</td>
-	      <td>${vo.cpMid}</td>
-	      <td>${vo.cpContent}</td>
-	      <td>${vo.cpDate}</td>
-	      <td>
-	        <a href="javascript:complaintCheck('${vo.part}','${vo.partIdx}','${vo.complaint}')">${vo.complaint == 'NO' ? '표시중' : '감추기'}</a>
-	      </td>
-		    <c:set var="complaintCnt" value="${complaintCnt - 1}" />
-		  </tr>
+      <tr>
+        <td>${complaintCnt}</td>
+        <td>${vo.part}</td>
+        <td>${vo.title}</td>
+        <td>${vo.nickName}</td>
+        <td>${vo.cpMid}</td>
+        <td>${vo.cpContent}</td>
+        <td>${vo.cpDate}</td>
+        <td>
+          <a href="javascript:complaintCheck('${vo.part}','${vo.partIdx}','${vo.complaint}')">${vo.complaint == 'NO' ? '표시중' : '감추기'}</a>
+        </td>
+        <td>
+          <button onclick="deleteComplaint(${vo.idx})" class="btn btn-danger btn-sm">삭제</button>
+        </td>
+        <c:set var="complaintCnt" value="${complaintCnt - 1}" />
+      </tr>
     </c:forEach>
-    <tr><td colspan="8" class="m-0 p-0"></td></tr>
+    <tr><td colspan="9" class="m-0 p-0"></td></tr>
   </table>
 </div>
 <p><br/></p>

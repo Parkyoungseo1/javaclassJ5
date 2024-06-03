@@ -15,6 +15,7 @@ import admin.board.BoardListCommand;
 import admin.complaint.BoardComplaintInputCommand;
 import admin.complaint.ComplaintCheckCommand;
 import admin.complaint.ComplaintListCommand;
+import admin.complaint.DeleteComplaintCommand;
 import admin.member.MemberDeleteOkCommand;
 import admin.member.MemberLevelChangeCommand;
 import admin.member.MemberLevelSelectCheckCommand;
@@ -111,6 +112,11 @@ public class AdminController extends HttpServlet {
 		}
 		else if(com.equals("/ComplaintCheck")) {
 			command = new ComplaintCheckCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/DeleteComplaint")) {
+			command = new DeleteComplaintCommand();
 			command.execute(request, response);
 			return;
 		}
