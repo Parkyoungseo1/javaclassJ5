@@ -15,7 +15,8 @@
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="${ctp}/GuestList">중고거래 게시판</a>
+        <!-- <a class="nav-link" href="${ctp}/GuestList">중고거래 게시판</a> -->
+        <a class="nav-link" href="${ctp}/Chat.chat">중고거래 게시판</a>
       </li>
 			<c:if test="${level <= 4}">
 	      <li class="nav-item">
