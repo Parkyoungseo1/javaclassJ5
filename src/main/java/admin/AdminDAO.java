@@ -191,24 +191,24 @@ public class AdminDAO {
 		return res;
 	}
 
-//	// 신고글 유무 체크하기
-//	public String getReport(String part, int partIdx) {
-//		String report = "NO";
-//		try {
-//			sql = "select * from junggocomplaint where part = ? and partIdx = ?";
-//			pstmt = conn.prepareStatement(sql);
-//			pstmt.setString(1, part);
-//			pstmt.setInt(2, partIdx);
-//			rs = pstmt.executeQuery();
-//			
-//			if(rs.next()) report = "OK";
-//		} catch (SQLException e) {
-//			System.out.println("SQL 오류 : " + e.getMessage());
-//		} finally {
-//			rsClose();			
-//		}
-//		return report;
-//	}
+	// 신고글 유무 체크하기
+	public String getReport(String part, int partIdx) {
+		String report = "NO";
+		try {
+			sql = "select * from junggocomplaint where part = ? and partIdx = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, part);
+			pstmt.setInt(2, partIdx);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) report = "OK";
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			rsClose();			
+		}
+		return report;
+	}
 
 	// 신고 전체 목록
 	public ArrayList<ComplaintVO> ComplaintList() {

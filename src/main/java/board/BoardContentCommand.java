@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-//import admin.AdminDAO;
+import admin.AdminDAO;
 
 public class BoardContentCommand implements BoardInterface {
 
@@ -21,8 +21,11 @@ public class BoardContentCommand implements BoardInterface {
 		String flag = request.getParameter("flag")==null ? "" : request.getParameter("flag");
 		String search = request.getParameter("search")==null ? "" : request.getParameter("search");
 		String searchString = request.getParameter("searchString")==null ? "" : request.getParameter("searchString");
+		String part = request.getParameter("part")==null ? "" : request.getParameter("part");
 		
 		BoardDAO dao = new BoardDAO();
+		
+		request.setAttribute("part", part);
 		
 		// 게시글 조회수 1씩 증가시키기(중복방지)
 		HttpSession session = request.getSession();
@@ -47,10 +50,10 @@ public class BoardContentCommand implements BoardInterface {
 		request.setAttribute("nextVo", nextVo);
 		
 		// 신고글 유무 처리하기
-//		AdminDAO adminDao = new AdminDAO();
-//		String report = adminDao.getReport("board", idx);
+		AdminDAO adminDao = new AdminDAO();
+		String report = adminDao.getReport("board", idx);
 		
-//		request.setAttribute("report", report);
+		request.setAttribute("report", report);
 		request.setAttribute("flag", flag);
 		request.setAttribute("search", search);
 		request.setAttribute("searchString", searchString);
@@ -59,5 +62,5 @@ public class BoardContentCommand implements BoardInterface {
 		ArrayList<BoardReplyVO> replyVos = dao.getBoardReply(idx);
 		request.setAttribute("replyVos", replyVos);
 	}
-
+	
 }

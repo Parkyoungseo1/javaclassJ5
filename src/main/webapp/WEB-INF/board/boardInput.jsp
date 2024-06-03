@@ -8,6 +8,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>boardInput.jsp</title>
   <%@ include file = "/include/bs4.jsp" %>
+  <script>
+  	'use strict';
+  	function fCheck() {
+    	let fName1 = document.getElementById("fName1").value;
+    	
+    	if(fName1.trim() == "") {
+    		alert("업로드할 파일을 선택하세요");
+    		return false;
+    	}
+  	}
+  </script>
 </head>
 <body>
 <jsp:include page="/include/header.jsp" />
@@ -15,7 +26,7 @@
 <p><br/></p>
 <div class="container">
   <h2 class="text-center">게 시 판 글 쓰 기</h2>
-  <form name="myform" method="post" action="BoardInputOk.bo">
+  <form name="myform" method="post" action="BoardInputOk.bo" enctype="multipart/form-data">
     <table class="table table-bordered">
       <tr>
         <th>글쓴이</th>
@@ -24,6 +35,13 @@
       <tr>
         <th>글제목</th>
         <td><input type="text" name="title" id="title" placeholder="글제목을 입력하세요" autofocus required class="form-control" /></td>
+      </tr>
+      <tr>
+      	<input type="button" value="파일박스추가" onclick="fileBoxAppend()" class="btn btn-primary mb-2" />
+      </tr>
+      <tr>
+        <th>이미지 업로드</th>
+        <td><input type="file" name="image" id="image" class="form-control" /></td>
       </tr>
       <tr>
         <th>가격</th>
@@ -41,6 +59,16 @@
         </td>
       </tr>
       <tr>
+      <div class="mb-2">
+	      거래분류 :
+				<select name="part" id="part" class="form-control">
+	        <option ${part=="신발" ? "selected" : ""}>신발</option>
+	        <option ${part=="가구" ? "selected" : ""}>가구</option>
+	        <option ${part=="옷" ? "selected" : ""}>옷</option>
+	        <option ${part=="전자제품" ? "selected" : ""}>전자제품</option>
+	        <option ${part=="기타" ? "selected" : ""}>기타</option>
+	      </select>
+	    </div>
         <td colspan="2" class="text-center">
           <input type="submit" value="글올리기" class="btn btn-success mr-2"/>
           <input type="reset" value="다시입력" class="btn btn-warning mr-2"/>

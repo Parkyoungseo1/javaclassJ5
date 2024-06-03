@@ -54,18 +54,29 @@
         myform.name.focus();
         return false;
       }
-			// 이메일 주소형식체크
-			
-			// 홈페이지 주소형식체크
-			
-			// 전화번호 형식 체크
-			
     	
     	if(nickCheckSw == 0) {
     		alert("닉네임 중복체크버튼을 눌러주세요");
     		document.getElementById("nickNameBtn").focus();
     	}
     	else {
+    		// 전송전에 파일에 관련된 사항들을 체크해준다.
+				let fName = document.getElementById("file").value;
+				if(fName.trim() != "") {
+					let ext = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
+					let maxSize = 1024 * 1024 * 2;
+					let fileSize = document.getElementById("file").files[0].size;
+					
+					if(ext != 'jpg' && ext != 'gif' && ext != 'png') {
+						alert("그림파일만 업로드 가능합니다.");
+						return false;
+					}
+					else if(fileSize > maxSize) {
+						alert("업로드할 파일의 최대용량은 2MByte입니다.");
+						return false;
+					}
+				}  		
+    		
     		myform.email.value = email;
     		myform.tel.value = tel;
     		myform.address.value = address;
@@ -121,7 +132,7 @@
 <jsp:include page="/include/nav.jsp" />
 <p><br/></p>
 <div class="container">
-  <form name="myform" method="post" action="${ctp}/MemberUpdateOk.mem" class="was-validated">
+  <form name="myform" method="post" action="${ctp}/MemberUpdateOk.mem" class="was-validated" enctype="multipart/form-data">
     <h2>회 원 가 입</h2>
     <br/>
     <div>아이디 : ${sMid}</div>

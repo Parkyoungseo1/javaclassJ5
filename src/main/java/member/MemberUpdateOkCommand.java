@@ -7,27 +7,41 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
 public class MemberUpdateOkCommand implements MemberInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String mid = request.getParameter("mid")==null? "" : request.getParameter("mid");
-		String nickName = request.getParameter("nickName")==null? "" : request.getParameter("nickName");
-		String name = request.getParameter("name")==null? "" : request.getParameter("name");
-		String gender = request.getParameter("gender")==null? "" : request.getParameter("gender");
-		String birthday = request.getParameter("birthday")==null? "" : request.getParameter("birthday");
-		String tel = request.getParameter("tel")==null? "" : request.getParameter("tel");
-		String address = request.getParameter("address")==null? "" : request.getParameter("address");
-		String email = request.getParameter("email")==null? "" : request.getParameter("email");
-		String photo = request.getParameter("photo")==null? "noimage.jpg" : request.getParameter("photo");
-		String content = request.getParameter("content")==null? "" : request.getParameter("content");
-		String userInfor = request.getParameter("userInfor")==null? "" : request.getParameter("userInfor");
+		String realPath = request.getServletContext().getRealPath("/images/member/");
+		int maxSize = 1024 * 1024 * 2;
+		String encoding = "UTF-8";
+		
+		MultipartRequest multipartRequest = new MultipartRequest(request, realPath, maxSize, encoding, new DefaultFileRenamePolicy());
+		
+		// 회원 사진 업로드 되었는지 여부 처리? 업로드된 파일이 있으면 서버에 저장된 이름을, 없으면 기존파일명을 fsName변수에 저장한다.
+		String photo = multipartRequest.getFilesystemName("fName");
+		String fName = multipartRequest.getParameter("photo");
+		if(photo == null) photo = fName;
+		
+		HttpSession session = request.getSession();
+		String mid = (String) session.getAttribute("sMid");
+		String sNickName = (String) session.getAttribute("sNickName");
+		
+		String nickName = multipartRequest.getParameter("nickName")==null? "" : multipartRequest.getParameter("nickName");
+		String name = multipartRequest.getParameter("name")==null? "" : multipartRequest.getParameter("name");
+		String gender = multipartRequest.getParameter("gender")==null? "" : multipartRequest.getParameter("gender");
+		String birthday = multipartRequest.getParameter("birthday")==null? "" : multipartRequest.getParameter("birthday");
+		String tel = multipartRequest.getParameter("tel")==null? "" : multipartRequest.getParameter("tel");
+		String address = multipartRequest.getParameter("address")==null? "" : multipartRequest.getParameter("address");
+		String email = multipartRequest.getParameter("email")==null? "" : multipartRequest.getParameter("email");
+		//String photo = multipartRequest.getParameter("photo")==null? "noimage.jpg" : multipartRequest.getParameter("photo");
+		String content = multipartRequest.getParameter("content")==null? "" : multipartRequest.getParameter("content");
+		String userInfor = multipartRequest.getParameter("userInfor")==null? "" : multipartRequest.getParameter("userInfor");
 		
 		// DB에 저장시킨자료중 not null 데이터는 Back End 체크시켜준다.
 		// 닉네임 중복체크....
-		HttpSession session = request.getSession();
-		String sNickName = (String) session.getAttribute("sNickName");
-		
 		MemberDAO dao = new MemberDAO();
 		MemberVO vo = dao.getMemberNickCheck(nickName);
 		
@@ -53,7 +67,7 @@ public class MemberUpdateOkCommand implements MemberInterface {
 		vo.setPhoto(photo);
 		vo.setContent(content);
 		vo.setUserInfor(userInfor);
-		
+		System.out.println("vo : " + vo);
 		int res = dao.setMemberUpdateOk(vo);
 		
 		if(res != 0) {

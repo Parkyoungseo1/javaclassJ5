@@ -25,7 +25,7 @@
 	    </c:if>  
       <c:if test="${level <= 4 && (level > 1 || level == 0)}">
 	      <li class="nav-item">
-	        <a class="nav-link" href="#">PDS</a>
+	        <a class="nav-link" href="PdsList.pds">PDS</a>
 	      </li>    
 	     </c:if>
 	     <c:if test="${level <= 4}">

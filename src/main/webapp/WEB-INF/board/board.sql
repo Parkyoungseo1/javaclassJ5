@@ -12,6 +12,7 @@ create table junggoboard(
 	wDate datetime default now(),				/* 글쓴 날짜 */
 	good int default 0,									/* '좋아요' 클릭 횟수 누적 */
 	complaint char(2) default 'NO',			/* 신고글 유무(신고당한글 :OK, 정상글: NO) */
+  part varchar(50) not null, 				/* 거래분류(신발,가구,옷,전자제품,기타) */
 	primary key(idx),										/* 기본키 : 고유번호 */
 	foreign key(mid) references junggomember(mid)
 );

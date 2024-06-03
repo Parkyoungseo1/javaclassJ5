@@ -12,11 +12,11 @@ public class BoardVO {
 	private String wDate;
 	private int good;
 	private String complaint;
+	private String part;
 	
 	private int hour_diff;	// 게시글을 24시간 경과유무 체크변수
 	private int date_diff;	// 게시글을 일자 경과유무 체크변수
 	private int replyCnt;		// 부모글의 댓글수를 저장하는 변수
-	
 	public int getIdx() {
 		return idx;
 	}
@@ -83,6 +83,12 @@ public class BoardVO {
 	public void setComplaint(String complaint) {
 		this.complaint = complaint;
 	}
+	public String getPart() {
+		return part;
+	}
+	public void setPart(String part) {
+		this.part = part;
+	}
 	public int getHour_diff() {
 		return hour_diff;
 	}
@@ -105,7 +111,9 @@ public class BoardVO {
 	public String toString() {
 		return "BoardVO [idx=" + idx + ", mid=" + mid + ", nickName=" + nickName + ", title=" + title + ", content="
 				+ content + ", readNum=" + readNum + ", price=" + price + ", openSw=" + openSw + ", wDate=" + wDate + ", good="
-				+ good + ", complaint=" + complaint + ", hour_diff=" + hour_diff + ", date_diff=" + date_diff + ", replyCnt="
-				+ replyCnt + "]";
+				+ good + ", complaint=" + complaint + ", part=" + part + ", hour_diff=" + hour_diff + ", date_diff=" + date_diff
+				+ ", replyCnt=" + replyCnt + "]";
 	}
+	
+	
 }

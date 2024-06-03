@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import common.GetConn;
 
@@ -34,15 +35,15 @@ public class BoardDAO {
 			}
 		}
 	}
+	
 
 	// 전체 게시글 보기
-	public ArrayList<BoardVO> getBoardList(int startIndexNo, int pageSize, String contentsShow, String search, String searchString) {
+	public ArrayList<BoardVO> getBoardList(int startIndexNo, int pageSize, String section, String part) {
 		ArrayList<BoardVO> vos = new ArrayList<BoardVO>();
 		try {
-			if(search == null || search.equals("")) {
-				if(contentsShow.equals("adminOK")) {
-				  sql = "select *, datediff(wDate, now()) as date_diff, "
-				  		+ "timestampdiff(hour, wDate, now()) as hour_diff, "
+			if(section.equals("board")) {
+				if(part.equals("거래분류")) {
+				  sql = "select *, datediff(wDate, now()) as date_diff, timestampdiff(hour, wDate, now()) as hour_diff, "
 				  		+ "(select count(*) from junggoboardReply where boardIdx = b.idx) as replyCnt "
 				  		+ "from junggoboard b order by idx desc limit ?,?";
 				  pstmt = conn.prepareStatement(sql);
@@ -50,49 +51,16 @@ public class BoardDAO {
 				  pstmt.setInt(2, pageSize);
 				}
 				else {
-					sql = "select *, datediff(wDate, now()) as date_diff, "
-							+ "timestampdiff(hour, wDate, now()) as hour_diff, "
-							+ "(select count(*) from junggoboardReply where boardIdx = b.idx) as replyCnt "
-							+ "from junggoboard b where openSW = 'OK' and complaint = 'NO' union "
-							+ "select *, datediff(wDate, now()) as date_diff, timestampdiff(hour, wDate, now()) as hour_diff, "
-							+ "(select count(*) from junggoboardReply where boardIdx = b.idx) as replyCnt "
-							+ "from junggoboard b "
-							+ "where mid = ? order by idx desc limit ?,?";
-					pstmt = conn.prepareStatement(sql);
-					pstmt.setString(1, contentsShow);
-					pstmt.setInt(2, startIndexNo);
-					pstmt.setInt(3, pageSize);
-				}
-			}
-			else {
-				if(contentsShow.equals("adminOK")) {
-				  sql = "select *, datediff(wDate, now()) as date_diff, timestampdiff(hour, wDate, now()) as hour_diff, "
+					sql = "select *, datediff(wDate, now()) as date_diff, timestampdiff(hour, wDate, now()) as hour_diff, "
 				  		+ "(select count(*) from junggoboardReply where boardIdx = b.idx) as replyCnt "
-				  		+ "from junggoboard b where "+search+" like  ? order by idx desc limit ?,?";
+				  		+ "from junggoboard b where part = ? order by idx desc limit ?,?";
 				  pstmt = conn.prepareStatement(sql);
-				  pstmt.setString(1, "%"+searchString+"%");
+				  pstmt.setString(1, part);
 				  pstmt.setInt(2, startIndexNo);
 				  pstmt.setInt(3, pageSize);
 				}
-				else {
-					sql = "select *, datediff(wDate, now()) as date_diff, "
-							+ "timestampdiff(hour, wDate, now()) as hour_diff, "
-							+ "(select count(*) from junggoboardReply where boardIdx = b.idx) as replyCnt "
-							+ "from junggoboard b where openSW = 'OK' and complaint = 'NO' and "+search+" like ? union "
-							+ "select *, datediff(wDate, now()) as date_diff, timestampdiff(hour, wDate, now()) as hour_diff, "
-							+ "(select count(*) from junggoboardReply where boardIdx = b.idx) as replyCnt "
-							+ "from junggoboard b "
-							+ "where mid = ? and "+search+" like ? order by idx desc limit ?,?";
-					pstmt = conn.prepareStatement(sql);
-					pstmt.setString(1, "%"+searchString+"%");
-					pstmt.setString(2, contentsShow);
-					pstmt.setString(3, "%"+searchString+"%");
-					pstmt.setInt(4, startIndexNo);
-					pstmt.setInt(5, pageSize);
-				}
+			  rs = pstmt.executeQuery();
 			}
-			rs = pstmt.executeQuery();
-			
 			while(rs.next()) {
 				vo = new BoardVO();
 				vo.setIdx(rs.getInt("idx"));
@@ -101,6 +69,7 @@ public class BoardDAO {
 				vo.setTitle(rs.getString("title"));
 				vo.setContent(rs.getString("content"));
 				vo.setReadNum(rs.getInt("readNum"));
+				vo.setPart(rs.getString("part"));
 				vo.setPrice(rs.getInt("price"));
 				vo.setOpenSw(rs.getString("openSw"));
 				vo.setwDate(rs.getString("wDate"));
@@ -127,7 +96,7 @@ public class BoardDAO {
 	public int setBoardInput(BoardVO vo) {
 		int res = 0;
 		try {
-			sql = "insert into junggoboard values (default,?,?,?,?,default,?,?,default,default,default)";
+			sql = "insert into junggoboard values (default,?,?,?,?,default,?,?,default,default,default,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getMid());
 			pstmt.setString(2, vo.getNickName());
@@ -135,6 +104,7 @@ public class BoardDAO {
 			pstmt.setString(4, vo.getContent());
 			pstmt.setInt(5, vo.getPrice());
 			pstmt.setString(6, vo.getOpenSw());
+			pstmt.setString(7, vo.getPart());
 			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("SQL 오류 : " + e.getMessage());
@@ -160,6 +130,7 @@ public class BoardDAO {
 				vo.setTitle(rs.getString("title"));
 				vo.setContent(rs.getString("content"));
 				vo.setReadNum(rs.getInt("readNum"));
+				vo.setPart(rs.getString("part"));
 				vo.setPrice(rs.getInt("price"));
 				vo.setOpenSw(rs.getString("openSw"));
 				vo.setwDate(rs.getString("wDate"));
@@ -203,33 +174,19 @@ public class BoardDAO {
 		return res;
 	}
 	
-  // 게시물 총 레코드 건수 
-	public int getTotRecCnt(String contentsShow, String search, String searchString) {
+  // 게시물 총 레코드 건수  : (관리자옵션,게시물이름,분류명)  예: ("", "board", "신발")
+	public int getTotRecCnt(String section, String part) {
 		int totRecCnt = 0;
 		try {
-			if(search == null || search.equals("")) {
-				if(contentsShow.equals("adminOK")) {
-				  sql = "select count(*) as cnt from junggoboard";
+			if(section.equals("board")) {
+				if(part.equals("거래분류")) {
+					sql = "select count(*) as cnt from junggoboard";
 				  pstmt = conn.prepareStatement(sql);
 				}
 				else {
-					sql = "select sum(a.cnt) as cnt from (select count(*) as cnt from junggoboard where openSW = 'OK' and complaint = 'NO' union select count(*) as cnt from junggoboard where mid = ? and (openSW = 'NO' or complaint = 'OK')) as a";
+					sql = "select count(*) as cnt from junggoboard where part = ?";
 					pstmt = conn.prepareStatement(sql);
-					pstmt.setString(1, contentsShow);
-				}
-			}
-			else {
-				if(contentsShow.equals("adminOK")) {
-				  sql = "select count(*) as cnt from junggoboard where "+search+" like ?";
-				  pstmt = conn.prepareStatement(sql);
-				  pstmt.setString(1, "%"+searchString+"%");
-				}
-				else {
-					sql = "select sum(a.cnt) as cnt from (select count(*) as cnt from junggoboard where openSW = 'OK' and complaint = 'NO' and "+search+" like ? union select count(*) as cnt from junggoboard where mid = ? and (openSW = 'NO' or complaint = 'OK') and "+search+" like ?) as a";
-					pstmt = conn.prepareStatement(sql);
-					pstmt.setString(1, "%"+searchString+"%");
-					pstmt.setString(2, contentsShow);
-					pstmt.setString(3, "%"+searchString+"%");
+					pstmt.setString(1, part);
 				}
 			}
 			rs = pstmt.executeQuery();
@@ -379,6 +336,86 @@ public class BoardDAO {
 			rsClose();			
 		}
 		return replyVos;
+	}
+	
+	// 게시판 조건별 검색 리스트
+	public int getTotRecCnt(String section, String search, String searchString) {
+		int totRecCnt = 0;
+		try {
+			if(section.equals("board")) {
+				if(search.equals("")) {
+					sql = "select count(*) as cnt from junggoboard";
+				  pstmt = conn.prepareStatement(sql);
+				}
+				else {
+					sql = "select count(*) as cnt from junggoboard where "+search+" like ?";
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setString(1, "%"+searchString+"%");
+				}
+			}
+			rs = pstmt.executeQuery();
+			rs.next();
+			totRecCnt = rs.getInt("cnt");
+		} catch (SQLException e) {
+			System.out.println("SQL 오류!! : " + e.getMessage());
+		} finally {
+			rsClose();			
+		}
+		return totRecCnt;
+	}
+
+	public List<BoardVO> getBoardList(int startIndexNo, int pageSize, String section, String search, String searchString) {
+		ArrayList<BoardVO> vos = new ArrayList<BoardVO>();
+		try {
+			if(section.equals("board")) {
+				if(search.equals("")) {
+				  sql = "select *, datediff(wDate, now()) as date_diff, timestampdiff(hour, wDate, now()) as hour_diff, "
+				  		+ "(select count(*) from junggoboardReply where boardIdx = b.idx) as replyCnt "
+				  		+ "from junggoboard b order by idx desc limit ?,?";
+				  pstmt = conn.prepareStatement(sql);
+				  pstmt.setInt(1, startIndexNo);
+				  pstmt.setInt(2, pageSize);
+				}
+				else {
+					sql = "select *, datediff(wDate, now()) as date_diff, timestampdiff(hour, wDate, now()) as hour_diff, "
+				  		+ "(select count(*) from junggoboardReply where boardIdx = b.idx) as replyCnt "
+				  		+ "from junggoboard b where "+search+" like ? order by idx desc limit ?,?";
+				  pstmt = conn.prepareStatement(sql);
+				  pstmt.setString(1, "%"+searchString+"%");
+				  pstmt.setInt(2, startIndexNo);
+				  pstmt.setInt(3, pageSize);
+				}
+			  rs = pstmt.executeQuery();
+			}
+			while(rs.next()) {
+				vo = new BoardVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setNickName(rs.getString("nickName"));
+				vo.setTitle(rs.getString("title"));
+				vo.setContent(rs.getString("content"));
+				vo.setReadNum(rs.getInt("readNum"));
+				vo.setPart(rs.getString("part"));
+				vo.setPrice(rs.getInt("price"));
+				vo.setOpenSw(rs.getString("openSw"));
+				vo.setwDate(rs.getString("wDate"));
+				vo.setGood(rs.getInt("good"));
+				vo.setComplaint(rs.getString("complaint"));
+				
+				vo.setHour_diff(rs.getInt("hour_diff"));
+				vo.setDate_diff(rs.getInt("date_diff"));
+				
+				vo.setReplyCnt(rs.getInt("replyCnt"));
+				
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL 오류.. : " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			rsClose();			
+		}
+		return vos;
 	}
 
 }

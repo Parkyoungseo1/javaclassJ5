@@ -246,12 +246,15 @@
       <td colspan="4">
         <div class="row actions">
           <div class="col">
+            <%-- 
             <c:if test="${empty flag}">
               <input type="button" value="돌아가기" onclick="location.href='BoardList.bo?pag=${pag}&pageSize=${pageSize}';" class="btn btn-warning" />
             </c:if>
             <c:if test="${!empty flag}">
               <input type="button" value="돌아가기" onclick="location.href='BoardSearchList.bo?pag=${pag}&pageSize=${pageSize}&search=${search}&searchString=${searchString}';" class="btn btn-warning" />
             </c:if>
+             --%>
+            <input type="button" value="돌아가기" onclick="location.href='BoardList.bo?pag=${pag}&pageSize=${pageSize}';" class="btn btn-warning" />
           </div>
           <c:if test="${sNickName == vo.nickName || sLevel == 0}">
             <div class="col text-right">

@@ -108,7 +108,7 @@
 	<br/>
 	<!-- 검색기 시작 --> 
 	<div class="container text-center">
-	  <form name="searchForm" method="post" action="BoardSearch.bo">
+	  <form name="searchForm" method="post" action="BoardSearchList.bo">
 	    <b>검색 : </b>
 	    <select name="search" id="search">
 	      <option value="title">글제목</option>
