@@ -10,14 +10,75 @@
   <%@ include file = "/include/bs4.jsp" %>
   <script>
   	'use strict';
-  	function fCheck() {
+		let cnt = 1;
+    
+    function fCheck() {
     	let fName1 = document.getElementById("fName1").value;
+    	let maxSize = 1024 * 1024 * 30;	// 기본 단위 : Byte,   1024 * 1024 * 30 = 30MByte 허용
+    	let title = $("#title").val();
     	
     	if(fName1.trim() == "") {
     		alert("업로드할 파일을 선택하세요");
     		return false;
     	}
-  	}
+    	else if(title.trim() == "") {
+    		alert("업로드할 파일을 선택하세요");
+    		return false;
+    	}
+    	
+    	// 파일사이즈와 확장자 체크하기
+    	let fileSize = 0;
+    	for(let i=1; i<=cnt; i++) {
+    		let imsiName = 'fName' + i;
+    		if(isNaN(document.getElementById(imsiName))) {
+    			let fName = document.getElementById(imsiName).value;
+    			if(fName != "") {
+    				fileSize += document.getElementById(imsiName).files[0].size;
+			    	let ext1 = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
+	    	    if(ext1 != 'jpg' && ext1 != 'gif' && ext1 != 'png' && ext1 != 'zip' && ext1 != 'hwp' && ext1 != 'ppt' && ext1 != 'pptx' && ext1 != 'doc' && ext1 != 'pdf' && ext1 != 'xlsx' && ext1 != 'txt') {
+	    		    alert("업로드 가능한 파일은 'jpg/gif/png/zip/hwp/ppt/pptx/doc/pdf/xlsx/txt'만 가능합니다.");
+	    		    return false;
+	    	    }
+    			}
+    		}
+    	}
+    		
+    	if(fileSize > maxSize) {
+    		alert("업로드할 파일의 최대용량은 30MByte입니다.");
+    		return false;
+    	}
+    	else {
+    		myform.fSize.value = fileSize;
+    		//alert("파일 총 사이즈 : " + fileSize);
+    		myform.submit();
+    	}
+    }
+    
+    // 파일 박스 추가하기
+    function fileBoxAppend() {
+    	cnt++;
+    	let fileBox = '';
+    	fileBox += '<div id="fBox'+cnt+'">';
+    	fileBox += '<input type="file" name="fName'+cnt+'" id="fName'+cnt+'" class="form-control-file border mb-2" style="float:left; width:85%;" />';
+    	fileBox += '<input type="button" value="삭제" onclick="deleteBox('+cnt+')" class="btn btn-danger mb-2 ml-2" style="width:10%;" />';
+    	fileBox += '</div>';
+    	$("#fileBox").append(fileBox);		// html(), text(), append()
+    }
+    
+    // 파일 박스 삭제
+    function deleteBox(cnt) {
+    	$("#fBox"+cnt).remove();
+    	cnt--;
+    }
+    
+    function pwdCheck1() {
+    	$("#pwdDemo").hide();
+    	$("#pwd").var("");
+    }
+    
+    function pwdCheck2() {
+    	$("#pwdDemo").show();
+    }
   </script>
 </head>
 <body>
@@ -36,13 +97,10 @@
         <th>글제목</th>
         <td><input type="text" name="title" id="title" placeholder="글제목을 입력하세요" autofocus required class="form-control" /></td>
       </tr>
-      <tr>
-      	<input type="button" value="파일박스추가" onclick="fileBoxAppend()" class="btn btn-primary mb-2" />
-      </tr>
-      <tr>
-        <th>이미지 업로드</th>
-        <td><input type="file" name="image" id="image" class="form-control" /></td>
-      </tr>
+      <div>
+      <input type="button" value="파일박스추가" onclick="fileBoxAppend()" class="btn btn-primary mb-2" />
+    	<input type="file" name="fName1" id="fName1" class="form-control-file border mb-2" />
+    	</div>
       <tr>
         <th>가격</th>
         <td><input type="text" name="price" id="price" placeholder="가격을 입력하세요" autofocus required class="form-control" /></td>
@@ -77,7 +135,8 @@
       </tr>
     </table>
     <input type="hidden" name="mid" value="${sMid}"/>
-    <input type="hidden" name="price" value="${pageContext.request.remoteAddr}"/>
+    <input type="hidden" name="fSize" value="${fSize}"/>
+    <input type="hidden" name="hostIp" value="${pageContext.request.remoteAddr}"/>
   </form>
 </div>
 <p><br/></p>

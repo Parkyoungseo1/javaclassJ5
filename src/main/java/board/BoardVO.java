@@ -13,6 +13,9 @@ public class BoardVO {
 	private int good;
 	private String complaint;
 	private String part;
+	private String fName;
+	private String fSName;
+	private int fSize;
 	
 	private int hour_diff;	// 게시글을 24시간 경과유무 체크변수
 	private int date_diff;	// 게시글을 일자 경과유무 체크변수
@@ -89,6 +92,24 @@ public class BoardVO {
 	public void setPart(String part) {
 		this.part = part;
 	}
+	public String getfName() {
+		return fName;
+	}
+	public void setfName(String fName) {
+		this.fName = fName;
+	}
+	public String getfSName() {
+		return fSName;
+	}
+	public void setfSName(String fSName) {
+		this.fSName = fSName;
+	}
+	public int getfSize() {
+		return fSize;
+	}
+	public void setfSize(int fSize) {
+		this.fSize = fSize;
+	}
 	public int getHour_diff() {
 		return hour_diff;
 	}
@@ -111,9 +132,11 @@ public class BoardVO {
 	public String toString() {
 		return "BoardVO [idx=" + idx + ", mid=" + mid + ", nickName=" + nickName + ", title=" + title + ", content="
 				+ content + ", readNum=" + readNum + ", price=" + price + ", openSw=" + openSw + ", wDate=" + wDate + ", good="
-				+ good + ", complaint=" + complaint + ", part=" + part + ", hour_diff=" + hour_diff + ", date_diff=" + date_diff
-				+ ", replyCnt=" + replyCnt + "]";
+				+ good + ", complaint=" + complaint + ", part=" + part + ", fName=" + fName + ", fSName=" + fSName + ", fSize="
+				+ fSize + ", hour_diff=" + hour_diff + ", date_diff=" + date_diff + ", replyCnt=" + replyCnt + "]";
 	}
+	
+	
 	
 	
 }

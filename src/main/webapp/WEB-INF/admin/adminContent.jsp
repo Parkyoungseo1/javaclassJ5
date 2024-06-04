@@ -56,13 +56,13 @@
       <div class="col-md-6">
         <div class="stat-card">
           <p>게시글 새글</p>
-          <a href="BoardList.ad?level=1"><b>${mCount}</b></a>건
+          <a href="BoardList.ad?level=1"><b>${bCount}</b></a>건
         </div>
       </div>
       <div class="col-md-6">
         <div class="stat-card">
-          <p>신고글(최근 1주일)</p>
-          <a href="Complaint.ad?level=1"><b>${mCount}</b></a>건
+          <p>신고글</p>
+          <a href="Complaint.ad?level=1"><b>${rCount}</b></a>건
         </div>
       </div>
       <div class="col-md-6">

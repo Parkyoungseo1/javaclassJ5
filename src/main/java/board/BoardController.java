@@ -63,11 +63,11 @@ public class BoardController extends HttpServlet {
 			command.execute(request, response);
 			viewPage = "/include/message.jsp";
 		}
-//		else if(com.equals("/BoardGoodCheck")) {
-//			command = new BoardGoodCheckCommand();
-//			command.execute(request, response);
-//			return;
-//		}
+		else if(com.equals("/BoardGoodCheck")) {
+			command = new BoardGoodCheckCommand();
+			command.execute(request, response);
+			return;
+		}
 		else if(com.equals("/BoardGoodCheck2")) {
 			command = new BoardGoodCheck2Command();
 			command.execute(request, response);

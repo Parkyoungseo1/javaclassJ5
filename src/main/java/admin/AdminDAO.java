@@ -277,4 +277,39 @@ public class AdminDAO {
 	   }
 	}
 
+	// 신고글 수 확인
+	public int getMemberReportListCount() {
+		int rCount = 0;
+		try {
+			sql = "select count(*) as cnt from junggocomplaint";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			rCount = rs.getInt("cnt");
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			rsClose();			
+		}
+		return rCount;
+	}
+
+	public int getMemberBoardNewListCount() {
+		int bCount = 0;
+		try {
+			sql = "select count(*) as cnt from junggoboard";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			bCount = rs.getInt("cnt");
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			rsClose();			
+		}
+		return bCount;
+	}
+
 }

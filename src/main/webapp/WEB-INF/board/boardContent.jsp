@@ -4,26 +4,45 @@
 <% pageContext.setAttribute("newLine", "\n"); %>
 <c:set var="ctp" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>boardContent.jsp</title>
+  <title>Board Content</title>
   <%@ include file = "/include/bs4.jsp" %>
   <style>
-    .table th {
-      background-color: #f8f9fa;
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      margin-top: 30px;
+    }
+    .table th, .table td {
+      vertical-align: middle;
       text-align: center;
     }
-    .table td {
-      vertical-align: middle;
+    .table th {
+      background-color: #007bff;
+      color: #fff;
     }
-    .content-cell {
+    .table .content-cell {
       height: 220px;
       overflow-y: auto;
+      text-align: left;
     }
     .actions .btn {
       margin-right: 10px;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+    .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
     }
     .navigation a {
       color: #007bff;
@@ -32,187 +51,200 @@
     .navigation a:hover {
       text-decoration: underline;
     }
+    .text-danger {
+      color: #dc3545 !important;
+    }
+    .text-success {
+      color: #28a745 !important;
+    }
+    .text-primary {
+      color: #007bff !important;
+    }
+    .modal-content {
+      border-radius: 8px;
+    }
+    .modal-header {
+      background-color: #007bff;
+      color: white;
+    }
+    .modal-footer {
+      background-color: #f1f1f1;
+    }
+    .table.table-hover tbody tr:hover {
+      background-color: #f1f1f1;
+    }
   </style>
   <script>
     'use strict';
     
     function boardDelete() {
-    	let ans = confirm("현재 게시글을 삭제 하시겠습니까?");
-    	if(ans) location.href = "BoardDelete.bo?idx=${vo.idx}";
+      let ans = confirm("현재 게시글을 삭제 하시겠습니까?");
+      if(ans) location.href = "BoardDelete.bo?idx=${vo.idx}";
     }
     
-    // 좋아요 처리(중복허용)
     function goodCheck() {
-    	$.ajax({
-    		url  : "BoardGoodCheck.bo",
-    		type : "post",
-    		data : {idx : ${vo.idx}},
-    		success:function(res) {
-    			if(res != "0") location.reload();
-    		},
-    		error : function() {
-    			alert("전송오류");
-    		}
-    	});
+      $.ajax({
+        url: "BoardGoodCheck.bo",
+        type: "post",
+        data: { idx: ${vo.idx} },
+        success: function(res) {
+          if(res != "0") location.reload();
+        },
+        error: function() {
+          alert("전송오류");
+        }
+      });
     }
     
-    // 좋아요 처리(중복불허)
     function goodCheck2() {
-    	$.ajax({
-    		url  : "BoardGoodCheck2.bo",
-    		type : "post",
-    		data : {idx : ${vo.idx}},
-    		success:function(res) {
-    			if(res != "0") location.reload();
-    			else alert("이미 좋아요 버튼을 클릭하셨습니다.");
-    		},
-    		error : function() {
-    			alert("전송오류");
-    		}
-    	});
+      $.ajax({
+        url: "BoardGoodCheck2.bo",
+        type: "post",
+        data: { idx: ${vo.idx} },
+        success: function(res) {
+          if(res != "0") location.reload();
+          else alert("이미 좋아요 버튼을 클릭하셨습니다.");
+        },
+        error: function() {
+          alert("전송오류");
+        }
+      });
     }
     
-    // 좋아요(따봉)수 증가 처리(중복허용)
     function goodCheckPlus() {
-    	$.ajax({
-    		url  : "BoardGoodCheckPlusMinus.bo",
-    		type : "post",
-    		data : {
-    			idx : ${vo.idx},
-    			goodCnt : +1
-    		},
-    		success:function(res) {
-    			location.reload();
-    		},
-    		error : function() {
-    			alert("전송오류");
-    		}
-    	});
+      $.ajax({
+        url: "BoardGoodCheckPlusMinus.bo",
+        type: "post",
+        data: {
+          idx: ${vo.idx},
+          goodCnt: +1
+        },
+        success: function(res) {
+          location.reload();
+        },
+        error: function() {
+          alert("전송오류");
+        }
+      });
     }
     
-    // 좋아요(따봉)수 감소 처리(중복허용)
     function goodCheckMinus() {
-    	$.ajax({
-    		url  : "BoardGoodCheckPlusMinus.bo",
-    		type : "post",
-    		data : {
-    			idx : ${vo.idx},
-    			goodCnt : -1
-    		},
-    		success:function(res) {
-    			if(res != "0") location.reload();
-    		},
-    		error : function() {
-    			alert("전송오류");
-    		}
-    	});
+      $.ajax({
+        url: "BoardGoodCheckPlusMinus.bo",
+        type: "post",
+        data: {
+          idx: ${vo.idx},
+          goodCnt: -1
+        },
+        success: function(res) {
+          if(res != "0") location.reload();
+        },
+        error: function() {
+          alert("전송오류");
+        }
+      });
     }
     
-    // 신고시 '기타'항목 선택시에 textarea 보여주기
     function etcShow() {
-    	$("#complaintTxt").show();
+      $("#complaintTxt").show();
     }
     
-    // 신고화면 선택후 신고사항 전송하기
     function complaintCheck() {
-    	if (!$("input[type=radio][name=complaint]:checked").is(':checked')) {
-    		alert("신고항목을 선택하세요");
-    		return false;
-    	}
-    	//if($("input[type=radio][id=complaint7]:checked") && $("#complaintTxt").val() == "")
-    	if($("input[type=radio]:checked").val() == '기타' && $("#complaintTxt").val() == "") {
-    		alert("기타 사유를 입력해 주세요.");
-    		return false;
-    	}
-    	
-    	let cpContent = modalForm.complaint.value;
-    	if(cpContent == '기타') cpContent += '/' + $("#complaintTxt").val();
-    	
-    	//alert("신고내용 : " + cpContent);
-    	let query = {
-    			part   : 'board',
-    			partIdx: ${vo.idx},
-    			cpMid  : '${sMid}',
-    			cpContent : cpContent
-    	}
-    	
-    	$.ajax({
-    		url  : "boardComplaintInput.ad",
-    		type : "post",
-    		data : query,
-    		success:function(res) {
-    			if(res != "0") {
-    				alert("신고 되었습니다.");
-    				location.reload();
-    			}
-    			else alert("신고 실패~~");
-    		},
-    		error : function() {
-    			alert("전송 오류!");
-    		}
-   		});
+      if (!$("input[type=radio][name=complaint]:checked").is(':checked')) {
+        alert("신고항목을 선택하세요");
+        return false;
+      }
+      if($("input[type=radio]:checked").val() == '기타' && $("#complaintTxt").val() == "") {
+        alert("기타 사유를 입력해 주세요.");
+        return false;
+      }
+      
+      let cpContent = modalForm.complaint.value;
+      if(cpContent == '기타') cpContent += '/' + $("#complaintTxt").val();
+      
+      let query = {
+        part: 'board',
+        partIdx: ${vo.idx},
+        cpMid: '${sMid}',
+        cpContent: cpContent
+      }
+      
+      $.ajax({
+        url: "boardComplaintInput.ad",
+        type: "post",
+        data: query,
+        success: function(res) {
+          if(res != "0") {
+            alert("신고 되었습니다.");
+            location.reload();
+          } else {
+            alert("신고 실패~~");
+          }
+        },
+        error: function() {
+          alert("전송 오류!");
+        }
+      });
     }
     
-    // 댓글달기
     function replyCheck() {
-    	let content = $("#content").val();
-    	if(content.trim() == "") {
-    		alert("댓글을 입력하세요");
-    		return false;
-    	}
-    	let query = {
-    			boardIdx 	: ${vo.idx},
-    			mid				: '${sMid}',
-    			nickName	: '${sNickName}',
-    			price    : '${pageContext.request.remoteAddr}',
-    			content		: content
-    	}
-    	
-    	$.ajax({
-    		url  : "BoardReplyInput.bo",
-    		type : "post",
-    		data : query,
-    		success:function(res) {
-    			if(res != "0") {
-    				alert("댓글이 입력되었습니다.");
-    				location.reload();
-    			}
-    			else alert("댓글 입력 실패~~");
-    		},
-    		error : function() {
-    			alert("전송 오류!");
-    		}
-    	});
+      let content = $("#content").val();
+      if(content.trim() == "") {
+        alert("댓글을 입력하세요");
+        return false;
+      }
+      let query = {
+        boardIdx: ${vo.idx},
+        mid: '${sMid}',
+        nickName: '${sNickName}',
+        price: '${pageContext.request.remoteAddr}',
+        content: content
+      }
+      
+      $.ajax({
+        url: "BoardReplyInput.bo",
+        type: "post",
+        data: query,
+        success: function(res) {
+          if(res != "0") {
+            alert("댓글이 입력되었습니다.");
+            location.reload();
+          } else {
+            alert("댓글 입력 실패~~");
+          }
+        },
+        error: function() {
+          alert("전송 오류!");
+        }
+      });
     }
     
-    // 댓글 삭제하기
     function replyDelete(idx) {
-    	let ans = confirm("선택한 댓글을 삭제하시겠습니까?");
-    	if(!ans) return false;
-    	
-    	$.ajax({
-    		url  : "BoardReplyDelete.bo",
-    		type : "post",
-    		data : {idx : idx},
-    		success:function(res) {
-    			if(res != "0") {
-    				alert("댓글이 삭제되었습니다.");
-    				location.reload();
-    			}
-    			else alert("삭제 실패~~");
-    		},
-    		error : function() {
-    			alert("전송 오류!");
-    		}
-    	});
-    	
+      let ans = confirm("선택한 댓글을 삭제하시겠습니까?");
+      if(!ans) return false;
+      
+      $.ajax({
+        url: "BoardReplyDelete.bo",
+        type: "post",
+        data: { idx: idx },
+        success: function(res) {
+          if(res != "0") {
+            alert("댓글이 삭제되었습니다.");
+            location.reload();
+          } else {
+            alert("삭제 실패~~");
+          }
+        },
+        error: function() {
+          alert("전송 오류!");
+        }
+      });
     }
   </script>
 </head>
 <body>
 <jsp:include page="/include/header.jsp" />
 <jsp:include page="/include/nav.jsp" />
-<p><br/></p>
 <div class="container mt-5">
   <h2 class="text-center mb-4">글 내 용 보 기</h2>
   <table class="table table-bordered">
@@ -233,8 +265,8 @@
       <td colspan="3">
         ${vo.title}
         (<a href="javascript:goodCheck()" class="text-danger">❤</a> : ${vo.good}) /
-        <a href="javascript:goodCheckPlus()" class="text-success">👍</a> &nbsp;
-        <a href="javascript:goodCheckMinus()" class="text-danger">👎</a> /
+        <a href="javascript:goodCheckPlus()" class="text-success"><i class="fa-regular fa-thumbs-up"></i></a> &nbsp;
+        <a href="javascript:goodCheckMinus()" class="text-danger"><i class="fa-regular fa-thumbs-down"></i></a> /
         (<a href="javascript:goodCheck2()" class="text-primary" style="font-size: 1.5rem;">♥</a> : ${vo.good})
       </td>
     </tr>
@@ -246,132 +278,115 @@
       <td colspan="4">
         <div class="row actions">
           <div class="col">
-            <%-- 
-            <c:if test="${empty flag}">
-              <input type="button" value="돌아가기" onclick="location.href='BoardList.bo?pag=${pag}&pageSize=${pageSize}';" class="btn btn-warning" />
-            </c:if>
-            <c:if test="${!empty flag}">
-              <input type="button" value="돌아가기" onclick="location.href='BoardSearchList.bo?pag=${pag}&pageSize=${pageSize}&search=${search}&searchString=${searchString}';" class="btn btn-warning" />
-            </c:if>
-             --%>
-            <input type="button" value="돌아가기" onclick="location.href='BoardList.bo?pag=${pag}&pageSize=${pageSize}';" class="btn btn-warning" />
+            <hr/>
+            <!-- 자료실에 등록된 자료가 사진이라면, 아래쪽에 모두 보여주기 -->
+            <div class="text-center">
+				    <c:set var="fSNames" value="${fn:split(vo.fSName,'/')}"/>
+						<c:forEach var="fSName" items="${fSNames}" varStatus="st">
+							${fNames[st.index]}<br/>
+							<c:set var="len" value="${fn:length(fSName)}"/>
+						  <c:set var="ext" value="${fn:substring(fSName, len-3, len)}"/>
+						  <c:set var="extLower" value="${fn:toLowerCase(ext)}"/>
+							<c:if test="${extLower == 'jpg' || extLower == 'gif' || extLower == 'png'}">
+				        <img src="${ctp}/images/member/${fSName}" width="50%" />
+				      </c:if>
+				      <hr/>
+				    </c:forEach>
+				  </div>
           </div>
-          <c:if test="${sNickName == vo.nickName || sLevel == 0}">
-            <div class="col text-right">
-              <c:if test="${report == 'OK'}"><span class="text-danger"><strong>현재 이글은 신고중입니다.</strong></span></c:if>
-              <input type="button" value="수정" onclick="location.href='BoardUpdate.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}';" class="btn btn-primary" />
-              <input type="button" value="삭제" onclick="boardDelete()" class="btn btn-danger" />
-            </div>
-          </c:if>
-          <c:if test="${sNickName != vo.nickName}">
-            <div class="col text-right">
-              <c:if test="${report == 'OK'}"><span class="text-danger"><strong>현재 이글은 신고중입니다.</strong></span></c:if>
-              <c:if test="${report != 'OK'}"><input type="button" value="신고하기" data-toggle="modal" data-target="#myModal" class="btn btn-danger" /></c:if>
-            </div>
-          </c:if>
+          <div class="col text-right">
+            <c:if test="${sessionScope.sMid eq vo.mid || sLevel == 0}">
+              <a href="${ctp}/BoardUpdate.bo?idx=${vo.idx}" class="btn btn-primary btn-sm">수정</a>
+              <button onclick="boardDelete()" class="btn btn-danger btn-sm">삭제</button>
+            </c:if>
+            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#exampleModal">신고</button>
+            <a href="${ctp}/BoardList.bo" class="btn btn-info btn-sm">목록</a>
+          </div>
         </div>
       </td>
     </tr>
   </table>
-  <hr/>
-  <div class="navigation">
-    <table class="table table-borderless">
-      <tr>
-        <td>
-          <c:if test="${!empty nextVo.title}">
-            ☝ <a href="BoardContent.bo?idx=${nextVo.idx}">다음글 : ${nextVo.title}</a><br/>
-          </c:if>
-          <c:if test="${!empty preVo.title}">
-            👇 <a href="BoardContent.bo?idx=${preVo.idx}">이전글 : ${preVo.title}</a><br/>
-          </c:if>
-        </td>
-      </tr>
-    </table>
-  </div>
-</div>
-<p><br/></p>
 
-<!-- 댓글 처리(리스트/입력) -->
-<div class="container">
-	<!-- 댓글 리스트 보여주기 -->
-	<table class="table table-hover text-center">
-	  <tr>
-	    <th>작성자</th>
-	    <th>댓글내용</th>
-	    <th>댓글일자</th>
-	  </tr>
-	  <c:forEach var="replyVo" items="${replyVos}" varStatus="st">
-	    <tr>
-	      <td>${replyVo.nickName}
-	        <c:if test="${sMid == replyVo.mid || sLevel == 0}">
-	          (<a href="javascript:replyDelete(${replyVo.idx})" title="댓글삭제">x</a>)
-	        </c:if>
-	      </td>
-	      <td class="text-left">${fn:replace(replyVo.content, newLine, "<br/>")}</td>
-	      <td>${fn:substring(replyVo.wDate, 0, 10)}</td>
-	    </tr>
-	  </c:forEach>
-	  <tr><td colspan="4" class='m-0 p-0'></td></tr>
-	</table>
-	
-	<!-- 댓글 입력창 -->
-	<form name="replyForm">
-	  <table class="table table-center">
-	    <tr>
-	      <td style="width:85%" class="text-left">
-	        글내용 :
-	        <textarea rows="4" name="content" id="content" class="form-control"></textarea>
-	      </td>
-	      <td style="width:15%">
-	        <br/>
-	        <p>작성자 : ${sNickName}</p>
-	        <p><input type="button" value="댓글달기" onclick="replyCheck()" class="btn btn-info btn-sm"/></p>
-	      </td>
-	    </tr>
-	  </table>
-	</form>
-	<br/>
-</div>
-<!-- 댓글 처리 -->
-
-	<!-- 신고하기 폼 모달창 -->
-  <div class="modal fade" id="myModal">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-      
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">현재 게시글을 신고합니다.</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        
-        <!-- Modal body -->
-        <div class="modal-body">
-          <b>신고사유 선택</b>
-          <hr/>
-          <form name="modalForm">
-            <div><input type="radio" name="complaint" id="complaint1" value="광고,홍보,영리목적"/> 광고,홍보,영리목적</div>
-            <div><input type="radio" name="complaint" id="complaint2" value="욕설,비방,차별,혐오"/> 욕설,비방,차별,혐오</div>
-            <div><input type="radio" name="complaint" id="complaint3" value="거래사기"/> 불법정보</div>
-            <div><input type="radio" name="complaint" id="complaint4" value="음란,청소년유해"/> 음란,청소년유해</div>
-            <div><input type="radio" name="complaint" id="complaint5" value="개인정보노출,유포,거래"/> 개인정보노출,유포,거래</div>
-            <div><input type="radio" name="complaint" id="complaint6" value="도배,스팸"/> 도배,스팸</div>
-            <div><input type="radio" name="complaint" id="complaint7" value="기타" onclick="etcShow()"/> 기타</div>
-            <div id="etc"><textarea rows="2" id="complaintTxt" class="form-control" style="display:none"></textarea></div>
-            <hr/>
-            <input type="button" value="확인" onclick="complaintCheck()" class="btn btn-success form-control" />
-          </form>
-        </div>
-        
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-        
-      </div>
+  <div class="row">
+    <div class="col">
+      <h4 class="mt-4 mb-3">댓글</h4>
+      <table class="table table-hover">
+        <tbody>
+          <c:forEach var="reply" items="${replyVos}">
+            <tr>
+              <td>${reply.nickName}</td>
+              <td>${fn:replace(reply.content, newLine, '<br>')}</td>
+              <td>${fn:substring(reply.wDate, 0, 16)}</td>
+              <td>
+                <c:if test="${sessionScope.sMid eq reply.mid}">
+                  <button onclick="replyDelete(${reply.idx})" class="btn btn-danger btn-sm">삭제</button>
+                </c:if>
+              </td>
+            </tr>
+          </c:forEach>
+          <c:if test="${empty replyVos}">
+            <tr>
+              <td colspan="4" class="text-center text-danger">댓글이 없습니다</td>
+            </tr>
+          </c:if>
+          <tr>
+            <td colspan="4" class="text-center">
+              <textarea id="content" class="form-control" rows="3" placeholder="댓글을 입력하세요"></textarea>
+              <button onclick="replyCheck()" class="btn btn-primary mt-2">댓글입력</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-  
+</div>
+
+<!-- 신고 모달 -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">신고하기</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form name="modalForm">
+        <div class="modal-body">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="complaint" value="광고글">
+            <label class="form-check-label">광고글</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="complaint" value="음란글">
+            <label class="form-check-label">음란글</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="complaint" value="욕설글">
+            <label class="form-check-label">욕설글</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="complaint" value="사기">
+            <label class="form-check-label">사기</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="complaint" value="사기">
+            <label class="form-check-label">도배</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="complaint" value="기타" onclick="etcShow()">
+            <label class="form-check-label">기타</label>
+          </div>
+          <textarea id="complaintTxt" class="form-control mt-2" rows="3" style="display:none;" placeholder="기타 사유 입력"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+          <button type="button" onclick="complaintCheck()" class="btn btn-primary">전송</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 <jsp:include page="/include/footer.jsp" />
 </body>
 </html>

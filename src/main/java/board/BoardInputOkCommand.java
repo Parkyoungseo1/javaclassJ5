@@ -20,27 +20,48 @@ public class BoardInputOkCommand implements BoardInterface {
 		
 		MultipartRequest multipartRequest = new MultipartRequest(request, realPath, maxSize, encoding, new DefaultFileRenamePolicy());
 		
-		String file = "";
+		Enumeration fileNames = multipartRequest.getFileNames();
 		
-		String mid = request.getParameter("mid")==null ? "" : request.getParameter("mid");
-		String nickName = request.getParameter("nickName")==null ? "" : request.getParameter("nickName");
-		String title = request.getParameter("title")==null ? "" : request.getParameter("title");
-		String content = request.getParameter("content")==null ? "" : request.getParameter("content");
-		int price = request.getParameter("price")==null ? 0 : Integer.parseInt(request.getParameter("price"));
-		String openSw = request.getParameter("openSw")==null ? "" : request.getParameter("openSw");
-		String part = request.getParameter("part")==null ? "거래분류" : request.getParameter("part");
+		String file = "";
+		String oFileName = "";
+		String fSName = "";
+		
+		while(fileNames.hasMoreElements()) {
+			file = (String) fileNames.nextElement();
+			
+			if(multipartRequest.getFilesystemName(file) != null) {
+				oFileName += multipartRequest.getOriginalFileName(file) + "/";
+				fSName += multipartRequest.getFilesystemName(file) + "/";
+			}
+		}
+		oFileName = oFileName.substring(0, oFileName.lastIndexOf("/"));
+		fSName = fSName.substring(0, fSName.lastIndexOf("/"));
+		//System.out.println("fSName : " + fSName);
+		String mid = multipartRequest.getParameter("mid")==null ? "" : multipartRequest.getParameter("mid");
+		String nickName = multipartRequest.getParameter("nickName")==null ? "" : multipartRequest.getParameter("nickName");
+		int fSize = (multipartRequest.getParameter("fSize")==null || multipartRequest.getParameter("fSize").equals("")) ? 0 : Integer.parseInt(multipartRequest.getParameter("fSize"));
+		String title = multipartRequest.getParameter("title")==null ? "" : multipartRequest.getParameter("title");
+		String content = multipartRequest.getParameter("content")==null ? "" : multipartRequest.getParameter("content");
+		int price = multipartRequest.getParameter("price")==null ? 0 : Integer.parseInt(multipartRequest.getParameter("price"));
+		String openSw = multipartRequest.getParameter("openSw")==null ? "" : multipartRequest.getParameter("openSw");
+		String part = multipartRequest.getParameter("part")==null ? "거래분류" : multipartRequest.getParameter("part");
+		
+		//System.out.println("price : " + price);
 		
 		BoardVO vo = new BoardVO();
 		
 		vo.setMid(mid);
 		vo.setNickName(nickName);
+		vo.setfName(oFileName);
+		vo.setfSName(fSName);
+		vo.setfSize(fSize);
 		title = title.replace("<", "&lt;").replace(">", "&gt;");
 		vo.setTitle(title);
 		vo.setContent(content);
 		vo.setPrice(price);
 		vo.setOpenSw(openSw);
 		vo.setPart(part);
-		
+		System.out.println("vo : " + vo);
 		BoardDAO dao = new BoardDAO();
 		
 		int res = dao.setBoardInput(vo);

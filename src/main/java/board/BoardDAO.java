@@ -66,6 +66,9 @@ public class BoardDAO {
 				vo.setIdx(rs.getInt("idx"));
 				vo.setMid(rs.getString("mid"));
 				vo.setNickName(rs.getString("nickName"));
+				vo.setfName(rs.getString("fName"));
+				vo.setfSName(rs.getString("fSName"));
+				vo.setfSize(rs.getInt("fSize"));
 				vo.setTitle(rs.getString("title"));
 				vo.setContent(rs.getString("content"));
 				vo.setReadNum(rs.getInt("readNum"));
@@ -96,7 +99,7 @@ public class BoardDAO {
 	public int setBoardInput(BoardVO vo) {
 		int res = 0;
 		try {
-			sql = "insert into junggoboard values (default,?,?,?,?,default,?,?,default,default,default,?)";
+			sql = "insert into junggoboard values (default,?,?,?,?,default,?,?,default,default,default,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getMid());
 			pstmt.setString(2, vo.getNickName());
@@ -105,6 +108,9 @@ public class BoardDAO {
 			pstmt.setInt(5, vo.getPrice());
 			pstmt.setString(6, vo.getOpenSw());
 			pstmt.setString(7, vo.getPart());
+			pstmt.setString(8, vo.getfName());
+			pstmt.setString(9, vo.getfSName());
+			pstmt.setInt(10, vo.getfSize());
 			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("SQL 오류 : " + e.getMessage());
@@ -127,6 +133,9 @@ public class BoardDAO {
 				vo.setIdx(rs.getInt("idx"));
 				vo.setMid(rs.getString("mid"));
 				vo.setNickName(rs.getString("nickName"));
+				vo.setfName(rs.getString("fName"));
+				vo.setfSName(rs.getString("fSName"));
+				vo.setfSize(rs.getInt("fSize"));
 				vo.setTitle(rs.getString("title"));
 				vo.setContent(rs.getString("content"));
 				vo.setReadNum(rs.getInt("readNum"));
@@ -392,6 +401,49 @@ public class BoardDAO {
 				vo.setIdx(rs.getInt("idx"));
 				vo.setMid(rs.getString("mid"));
 				vo.setNickName(rs.getString("nickName"));
+				vo.setTitle(rs.getString("title"));
+				vo.setContent(rs.getString("content"));
+				vo.setReadNum(rs.getInt("readNum"));
+				vo.setPart(rs.getString("part"));
+				vo.setPrice(rs.getInt("price"));
+				vo.setOpenSw(rs.getString("openSw"));
+				vo.setwDate(rs.getString("wDate"));
+				vo.setGood(rs.getInt("good"));
+				vo.setComplaint(rs.getString("complaint"));
+				
+				vo.setHour_diff(rs.getInt("hour_diff"));
+				vo.setDate_diff(rs.getInt("date_diff"));
+				
+				vo.setReplyCnt(rs.getInt("replyCnt"));
+				
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL 오류.. : " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			rsClose();			
+		}
+		return vos;
+	}
+
+	// 메인 화면에 전체 게시글 띄우기
+	public List<BoardVO> getMainBoardList() {
+		ArrayList<BoardVO> vos = new ArrayList<BoardVO>();
+		try {
+		  sql = "select *, datediff(wDate, now()) as date_diff, timestampdiff(hour, wDate, now()) as hour_diff, "
+	  		+ "(select count(*) from junggoboardReply where boardIdx = b.idx) as replyCnt "
+	  		+ "from junggoboard b order by idx desc limit 7";
+		  pstmt = conn.prepareStatement(sql);
+		  rs = pstmt.executeQuery();
+			while(rs.next()) {
+				vo = new BoardVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setNickName(rs.getString("nickName"));
+				vo.setfName(rs.getString("fName"));
+				vo.setfSName(rs.getString("fSName"));
+				vo.setfSize(rs.getInt("fSize"));
 				vo.setTitle(rs.getString("title"));
 				vo.setContent(rs.getString("content"));
 				vo.setReadNum(rs.getInt("readNum"));

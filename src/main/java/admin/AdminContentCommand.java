@@ -13,8 +13,12 @@ public class AdminContentCommand implements AdminInterface {
 		AdminDAO dao = new AdminDAO();
 		
 		int mCount = dao.getNewMemberListCount();
+		int rCount = dao.getMemberReportListCount();
+		int bCount = dao.getMemberBoardNewListCount();
 		
 		request.setAttribute("mCount", mCount);
+		request.setAttribute("rCount", rCount);
+		request.setAttribute("bCount", bCount);
 	}
 
 }

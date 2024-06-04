@@ -49,7 +49,7 @@ public class Pagination {
 				if(search.equals(""))	vos = boardDao.getBoardList(startIndexNo, pageSize, section, part);
 				else vos = boardDao.getBoardList(startIndexNo, pageSize, "board", search, searchString);
 			}
-			System.out.println("vos : " + vos);
+			//System.out.println("vos : " + vos);
 		}
 		else if(section.equals("pds")) {
 			//vos = pdsDao.getBoardList(startIndexNo, pageSize, contentsShow);	// 자료실의 전체 자료 가져오기

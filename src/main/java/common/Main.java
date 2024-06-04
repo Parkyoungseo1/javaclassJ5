@@ -1,6 +1,7 @@
 package common;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import board.BoardDAO;
+import board.BoardVO;
 
 @SuppressWarnings("serial")
 @WebServlet("/Main")
@@ -29,6 +33,13 @@ public class Main extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
 		dispatcher.forward(request, response);
 		*/
+		
+		BoardDAO boardDao = new BoardDAO();
+		
+		List<BoardVO> vos = boardDao.getMainBoardList();
+
+		request.setAttribute("vos", vos);
+		
 		String viewPage = "/WEB-INF/main/main.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
 		dispatcher.forward(request, response);		

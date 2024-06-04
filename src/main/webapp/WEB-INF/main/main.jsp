@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html lang="en">
@@ -58,7 +59,7 @@
       <hr class="d-sm-none">
     </div>
     <div class="col-sm-8 content">
-      <h2>실시간 채팅</h2>
+     <%--  <h2>실시간 채팅</h2>
       <h5>Title description, Dec 7, 2017</h5>
       <h5 class="mb-4">로그인 중인 회원 : ${sName}</h5>
       <h6 class="text-right">최근 올라온 채팅</h6>
@@ -72,7 +73,7 @@
             <th>성별</th>
             <th>주소</th>
           </tr>
-        </thead>
+        </thead> 
         <tbody>
           <c:forEach var="vo" items="${vos}" varStatus="st">
             <tr>
@@ -94,6 +95,48 @@
       <div class="fakeimg">
         <img src="${ctp}/images/member/${selectedImage}" alt="Random Image" class="img-fluid">
       </div>
+       --%>
+      
+       <table class="table table-hover m-0 p-0 text-center">
+    <tr class="table-dark text-dark">
+      <th>글제목</th>
+      <th>글쓴이</th>
+      <th>글쓴날짜</th>
+      <th>분류</th>
+      <th>조회수(추천)</th>
+    </tr>
+    <c:forEach var="vo" items="${vos}" varStatus="st">
+      <%-- 
+      <c:if test="${vo.openSw == 'OK' || sLevel == 0 || sNickName == vo.nickName}">
+      	<c:if test="${vo.complaint == 'NO' || sLevel == 0 || sNickName == vo.nickName}">
+       --%>
+			    <tr>
+			      <td class="text-left">
+			        <a>${vo.title}</a>
+			        <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/member/new.gif"/></c:if>  
+			        <c:if test="${vo.replyCnt != 0}">(${vo.replyCnt})</c:if>
+			      </td>
+			      <td>
+			        ${vo.nickName}
+			        <c:if test="${sLevel == 0}">
+			          <a href="#" onclick="modalCheck('${vo.idx}','${vo.price}','${vo.mid}','${vo.nickName}')" data-toggle="modal" data-target="#myModal" class="badge badge-success">모달</a>
+			        </c:if>
+			      </td>
+			      <td>
+			        <!-- 1일(24시간) 이내는 시간만 표시(10:43), 이후는 날짜와 시간을 표시 : 2024-05-14 10:43 -->
+			        ${vo.date_diff == 0 ? fn:substring(vo.wDate,11,19) : fn:substring(vo.wDate,0,10)}
+			      </td>
+			      <td>${vo.part}</td>
+			      <td>${vo.readNum}(${vo.good})</td>
+			    </tr>
+			<%-- 
+		    </c:if>
+	    </c:if>
+	     --%>
+	    <c:set var="curScrStartNo" value="${curScrStartNo - 1}" />
+	  </c:forEach>
+	  <tr><td colspan="7" class="m-0 p-0"></td></tr>
+  </table>     
       <p></p>
       <p></p>
     </div>

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import admin.AdminInterface;
 import board.BoardDAO;
@@ -17,6 +18,9 @@ public class BoardListCommand implements AdminInterface {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String part = request.getParameter("part")==null ? "거래분류" : request.getParameter("part");		
 		BoardDAO dao = new BoardDAO();
+		
+		HttpSession session = request.getSession();
+		int level = (int) session.getAttribute("sLevel");
 		
 		// 페이징 처리 시작
 		int pag = request.getParameter("pag")==null ? 1 : Integer.parseInt(request.getParameter("pag"));
@@ -34,7 +38,7 @@ public class BoardListCommand implements AdminInterface {
 		List<BoardVO> vos = dao.getBoardList(startIndexNo, pageSize, "board", part);
 		
 		request.setAttribute("vos", vos);
-		
+
 		request.setAttribute("pag", pag);
 		request.setAttribute("pageSize", pageSize);
 		request.setAttribute("totRecCnt", totRecCnt);
