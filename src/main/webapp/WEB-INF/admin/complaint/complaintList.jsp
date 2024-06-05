@@ -35,11 +35,15 @@
           url: "DeleteComplaint.ad",
           type: "post",
           data: { idx : idx},
-          success: function() {
-            location.reload();
+          success: function(res) {
+            if(res != "0") {
+            	alert("삭제 삭제 되었습니다.");
+	            location.reload();
+            }
+            else alert("삭제 실패!");
           },
           error: function() {
-            alert("삭제 실패!");
+            alert("전송오류!");
           }
         });
       }

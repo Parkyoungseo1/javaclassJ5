@@ -88,9 +88,9 @@ public class MemberLoginOkCommand implements MemberInterface {
 		// 등급레벨별 등급명칭을 저장한다.
 		String strLevel = "";
 		if(vo.getLevel() == 0) strLevel = "관리자";
-		else if(vo.getLevel() == 1) strLevel = "준회원";
-		else if(vo.getLevel() == 2) strLevel = "정회원";
-		else if(vo.getLevel() == 3) strLevel = "우수회원";
+		else if(vo.getLevel() == 1) strLevel = "신규회원";
+		else if(vo.getLevel() == 2) strLevel = "일반회원";
+		else if(vo.getLevel() == 3) strLevel = "거래우수회원";
 			
 		// 필요한 정보를 session에 저장처리한다.
 		HttpSession session = request.getSession();

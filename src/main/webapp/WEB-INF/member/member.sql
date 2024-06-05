@@ -16,7 +16,7 @@ create table junggomember (
   userInfor char(3) default '공개',				/* 회원 정보 공개여부(공개/비공개) */
   userDel   char(2)  default 'NO',			/* 회원 탈퇴신청여부(NO:현재 활동중, OK:탈퇴신청중) */
   point		  int default 100,						/* 회원 누적포인트(가입포인트100점, 1회방문시 10포인트증가, 1일 최대 50포인트까지 허용, 물건구매시 100원당 1포인트 증가 */
-  level     int default 1,							/* 회원등급(0:관리자, 1:신규회원, 2:정회원, 3:우수회원, (4:운영자)) , 99:탈퇴신청회원 */
+  level     int default 1,							/* 회원등급(0:관리자, 1:신규회원, 2:일반회원, 3:거래우수회원, (4:관리자)) , 99:탈퇴신청회원 */
   visitCnt  int default 0,							/* 총 방문횟수 */
   startDate datetime default now(),			/* 최초 가입일 */
   todayCnt  int default 0,							/* 오늘 방문한 횟수 */

@@ -17,7 +17,9 @@ public class DeleteComplaintCommand implements AdminInterface {
 		
 		AdminDAO dao = new AdminDAO();
 		
-		dao.setDeleteComplaint(idx);
+		int res = dao.setDeleteComplaint(idx);
+		
+		response.getWriter().write(res + "");
 	}
 
 }
