@@ -47,8 +47,7 @@
     <h3>관리자 메인화면</h3>
     <hr/>
     <!--
-      - 방명록은 최근 1주일안에 작성된글의 개수를 보여준다.
-      - 게시판은....__________
+      - 게시판
       - 신규등록건수 출력
       - 탈퇴신청회원 건수 출력
     -->
@@ -62,7 +61,7 @@
       <div class="col-md-6">
         <div class="stat-card">
           <p>신고글</p>
-          <a href="Complaint.ad?level=1"><b>${rCount}</b></a>건
+          <a href="ComplaintList.ad?level=1"><b>${rCount}</b></a>건
         </div>
       </div>
       <div class="col-md-6">
@@ -74,7 +73,7 @@
       <div class="col-md-6">
         <div class="stat-card">
           <p>탈퇴신청회원</p>
-          <a href=""><b>${m99Count}</b></a>건
+          <a href="#"><b>${m99Count}</b></a>건
         </div>
       </div>
     </div>

@@ -147,11 +147,11 @@ public class AdminDAO {
 		}
 		return mCount;
 	}
-
+	
 	// 각 레벨별 건수 구하기
 	public int getTotRecCnt(int level) {
 		int totRecCnt = 0;
-		try {
+		try { 
 			if(level == 999) {
 				sql = "select count(*) as cnt from junggomember";
 				pstmt = conn.prepareStatement(sql);
@@ -264,17 +264,19 @@ public class AdminDAO {
 	}
 	
 	//신고글 삭제하기 
-	public void setDeleteComplaint(int idx) {
+	public int setDeleteComplaint(int idx) {
+		int res = 0;
 	   try {
 	       sql = "delete from junggocomplaint where idx = ?";
 	       pstmt = conn.prepareStatement(sql);
 	       pstmt.setInt(1, idx);
-	       pstmt.executeUpdate();
+	       res = pstmt.executeUpdate();
 	   } catch (SQLException e) {
 	       System.out.println("SQL 오류 : " + e.getMessage());
 	   } finally {
 	     pstmtClose();            
 	   }
+	   return res;
 	}
 
 	// 신고글 수 확인

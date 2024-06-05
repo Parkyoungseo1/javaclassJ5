@@ -167,9 +167,9 @@
 	      <input type="button" value="선택반전" onclick="reverseCheck()" class="btn btn-info btn-sm mr-1"/>
 		    <div class="input-group-append">
 		      <select name="levelSelect" id="levelSelect">
-		        <option value="2">정회원</option>
-		        <option value="1">준회원</option>
-		        <option value="3">우수회원</option>
+		        <option value="2">일반회원</option>
+		        <option value="1">신규회원</option>
+		        <option value="3">거래우수회원</option>
 		      </select>
 		      <div class="input-group-append"><input type="button" value="선택항목등급변경" onclick="levelSelectCheck()" class="btn btn-warning btn-sm" /></div>
 		    </div>
@@ -230,9 +230,9 @@
 		            <c:if test="${vo.level != 0}">
 				          <!-- <form name="levelForm"> -->
 				          	<select name="level" id="level" onchange="levelChange(this)">
-				          	  <option value="1/${vo.idx}"  ${vo.level == 1  ? "selected" : ""}>준회원</option>
-				          	  <option value="2/${vo.idx}"  ${vo.level == 2  ? "selected" : ""}>정회원</option>
-				          	  <option value="3/${vo.idx}"  ${vo.level == 3  ? "selected" : ""}>우수회원</option>
+				          	  <option value="1/${vo.idx}"  ${vo.level == 1  ? "selected" : ""}>신규회원</option>
+				          	  <option value="2/${vo.idx}"  ${vo.level == 2  ? "selected" : ""}>일반회원</option>
+				          	  <option value="3/${vo.idx}"  ${vo.level == 3  ? "selected" : ""}>거래우수회원</option>
 				          	  <option value="0/${vo.idx}"  ${vo.level == 0  ? "selected" : ""}>관리자</option>
 				          	  <option value="99/${vo.idx}" ${vo.level == 99 ? "selected" : ""}>탈퇴신청회원</option>
 				          	</select>
